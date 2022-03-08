@@ -6,4 +6,29 @@
     android:layout_height="match_parent"
     tools:context=".Registrar">
 
+    <TextView
+        android:id="@+id/TextoRegistro"
+        android:layout_width="166dp"
+        android:layout_height="72dp"
+        android:layout_marginTop="60dp"
+        android:autoSizeMaxTextSize="100sp"
+        android:autoSizeTextType="uniform"
+        android:text="Registro"
+        android:textColor="@color/Blue"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.281"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="125dp"
+        android:layout_height="125dp"
+        android:layout_marginTop="30dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.302"
+        app:layout_constraintStart_toEndOf="@+id/TextoRegistro"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/logo2" />
 </androidx.constraintlayout.widget.ConstraintLayout>
