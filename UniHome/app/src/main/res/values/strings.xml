@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">UniHome</string>
+    <string name="Usuario">Usuario</string>
+    <string name="Contraseña">Contraseña</string>
 </resources>
