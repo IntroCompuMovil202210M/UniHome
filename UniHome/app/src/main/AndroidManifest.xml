@@ -10,6 +10,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.UniHome">
         <activity
+            android:name=".Principal"
+            android:exported="false"
+            android:label="@string/title_activity_principal"
+            android:theme="@style/Theme.UniHome.NoActionBar" />
+        <activity
             android:name=".Registrar"
             android:exported="false" />
         <activity

@@ -10,7 +10,7 @@ import android.widget.Button;
 
 public class MainActivity extends AppCompatActivity {
 
-    Button botonRegistroMain;
+    Button botonRegistroMain,botonEntrar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -19,12 +19,21 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         botonRegistroMain = findViewById(R.id.botonRegistrar);
+        botonEntrar = findViewById(R.id.botonEntrar);
 
         botonRegistroMain.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent actividadRegistro = new Intent(v.getContext(),Registrar.class);
                 startActivity(actividadRegistro);
+            }
+        });
+
+        botonEntrar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent actividadPrincipal = new Intent(v.getContext(),Principal.class);
+                startActivity(actividadPrincipal);
             }
         });
 

@@ -130,6 +130,7 @@
         android:layout_height="50dp"
         android:layout_marginTop="8dp"
         android:backgroundTint="@color/Blue"
+        android:backgroundTintMode="multiply"
         android:entries="@array/opcionRegistro"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.495"
