@@ -2,4 +2,9 @@
     <string name="app_name">UniHome</string>
     <string name="Usuario">Usuario</string>
     <string name="Contraseña">Contraseña</string>
+    
+    <string-array name="opcionRegistro">
+        <item>Arrendatario</item>
+        <item>Estudiante</item>
+    </string-array>
 </resources>
