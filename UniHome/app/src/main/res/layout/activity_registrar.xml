@@ -31,4 +31,97 @@
         app:layout_constraintStart_toEndOf="@+id/TextoRegistro"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/logo2" />
+
+    <EditText
+        android:id="@+id/NombreUsuarioRegistro"
+        android:layout_width="300dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="80dp"
+        android:ems="10"
+        android:hint="Nombre de Usuario"
+        android:backgroundTint="@color/Blue"
+        android:textColorHint="@color/Blue"
+        android:alpha="0.5"
+        android:inputType="textPersonName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/TextoRegistro" />
+
+    <EditText
+        android:id="@+id/emailUsuarioRegistro"
+        android:layout_width="300dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="8dp"
+        android:ems="10"
+        android:hint="Correo Electronico"
+        android:backgroundTint="@color/Blue"
+        android:textColorHint="@color/Blue"
+        android:alpha="0.5"
+        android:inputType="textEmailAddress"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/NombreUsuarioRegistro" />
+
+    <EditText
+        android:id="@+id/FechaRegistro"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:layout_marginTop="8dp"
+        android:ems="10"
+        android:hint="DD/MM/YYYY"
+        android:inputType="date"
+        android:backgroundTint="@color/Blue"
+        android:textColorHint="@color/Blue"
+        android:alpha="0.5"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.273"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/emailUsuarioRegistro" />
+
+    <EditText
+        android:id="@+id/editTextTextPassword"
+        android:layout_width="300dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="8dp"
+        android:ems="10"
+        android:hint="Contraseña"
+        android:inputType="textPassword"
+        android:backgroundTint="@color/Blue"
+        android:textColorHint="@color/Blue"
+        android:alpha="0.5"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/FechaRegistro" />
+
+    <EditText
+        android:id="@+id/ConfirmarContraRegistro"
+        android:layout_width="300dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="8dp"
+        android:ems="10"
+        android:hint="Confirmar Contraseña"
+        android:inputType="textPassword"
+        android:backgroundTint="@color/Blue"
+        android:textColorHint="@color/Blue"
+        android:alpha="0.5"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextTextPassword" />
+
+    <Button
+        android:id="@+id/BotonConfirmarRegistrar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="80dp"
+        android:text="Registrarse"
+        android:backgroundTint="@color/Blue"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ConfirmarContraRegistro" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
