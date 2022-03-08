@@ -8,8 +8,8 @@
 
     <ImageView
         android:id="@+id/logo"
-        android:layout_width="328dp"
-        android:layout_height="445dp"
+        android:layout_width="320dp"
+        android:layout_height="381dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -51,13 +51,12 @@
     <Button
         android:id="@+id/botonEntrar"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="84dp"
+        android:layout_marginTop="15dp"
         android:backgroundTint="@color/Blue"
         android:text="Entrar"
         android:textColor="@color/white"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.172"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/contrasena" />
 
@@ -65,38 +64,38 @@
         android:id="@+id/botongoogle"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:layout_marginStart="80dp"
-        android:layout_marginTop="28dp"
+        android:layout_marginStart="128dp"
+        android:layout_marginTop="48dp"
         android:background="@null"
         android:scaleType="centerInside"
-        app:layout_constraintStart_toEndOf="@+id/botonEntrar"
-        app:layout_constraintTop_toBottomOf="@+id/contrasena"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/botonEntrar"
         app:srcCompat="@drawable/googlelogo" />
 
     <ImageButton
         android:id="@+id/botonfacebook"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="28dp"
+        android:layout_marginTop="48dp"
         android:background="@null"
         android:scaleType="centerInside"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.256"
         app:layout_constraintStart_toEndOf="@+id/botongoogle"
-        app:layout_constraintTop_toBottomOf="@+id/contrasena"
+        app:layout_constraintTop_toBottomOf="@+id/botonRegistrar"
         app:srcCompat="@drawable/facebooklogo" />
 
     <Button
         android:id="@+id/botonRegistrar"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="15dp"
         android:backgroundTint="@color/Blue"
         android:text="Registrar"
         android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.187"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/botonEntrar" />
+        app:layout_constraintHorizontal_bias="0.409"
+        app:layout_constraintStart_toEndOf="@+id/botonEntrar"
+        app:layout_constraintTop_toBottomOf="@+id/contrasena" />
 </androidx.constraintlayout.widget.ConstraintLayout>
