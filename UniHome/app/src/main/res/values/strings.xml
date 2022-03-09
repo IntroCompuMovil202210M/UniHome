@@ -18,4 +18,13 @@
         <string name="menu_home">Inicio</string>
     <string name="menu_gallery">Publicaciones</string>
     <string name="menu_slideshow">Contactos</string>
+    <string name="title_activity_chat_actividad">chatActividad</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="first_fragment_label">Chats</string>
+    <string name="second_fragment_label">Nuevo</string>
+    <string name="next">Nuevo Chat</string>
+    <string name="previous">Previous</string>
+
+    <string name="hello_first_fragment">No Hay Chats</string>
+    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
 </resources>
