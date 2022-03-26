@@ -48,54 +48,54 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/usuario" />
 
-    <Button
-        android:id="@+id/botonEntrar"
-        android:layout_width="wrap_content"
-        android:layout_height="50dp"
-        android:layout_marginStart="84dp"
-        android:layout_marginTop="15dp"
-        android:backgroundTint="@color/Blue"
-        android:text="Entrar"
-        android:textColor="@color/white"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/contrasena" />
+    <LinearLayout
+        android:id="@+id/LoginLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toBottomOf="@+id/contrasena">
 
-    <ImageButton
-        android:id="@+id/botongoogle"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_marginStart="128dp"
-        android:layout_marginTop="48dp"
-        android:background="@null"
-        android:scaleType="centerInside"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/botonEntrar"
-        app:srcCompat="@drawable/googlelogo" />
+        <Button
+            android:id="@+id/botonEntrar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:text="Iniciar" />
 
-    <ImageButton
-        android:id="@+id/botonfacebook"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_marginTop="48dp"
-        android:background="@null"
-        android:scaleType="centerInside"
+        <Button
+            android:id="@+id/botonRegistrar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:text="Registrarse" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:gravity="center"
+        android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.256"
-        app:layout_constraintStart_toEndOf="@+id/botongoogle"
-        app:layout_constraintTop_toBottomOf="@+id/botonRegistrar"
-        app:srcCompat="@drawable/facebooklogo" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/LoginLayout">
 
-    <Button
-        android:id="@+id/botonRegistrar"
-        android:layout_width="wrap_content"
-        android:layout_height="50dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="15dp"
-        android:backgroundTint="@color/Blue"
-        android:text="Registrar"
-        android:textColor="@color/white"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.409"
-        app:layout_constraintStart_toEndOf="@+id/botonEntrar"
-        app:layout_constraintTop_toBottomOf="@+id/contrasena" />
+        <ImageButton
+            android:id="@+id/botongoogle"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:background="@null"
+            android:scaleType="centerInside"
+            app:srcCompat="@drawable/googlelogo" />
+
+        <ImageButton
+            android:id="@+id/botonfacebook"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:background="@null"
+            android:scaleType="centerInside"
+            app:srcCompat="@drawable/facebooklogo" />
+    </LinearLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
