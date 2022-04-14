@@ -63,6 +63,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="0.5"
+            android:layout_margin="5dp"
             android:background="@drawable/estilo_edittext"
             android:text="Iniciar" />
 
@@ -71,6 +72,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:background="@drawable/estilo_edittext"
+            android:layout_margin="5dp"
             android:layout_weight="0.5"
             android:text="Registrarse" />
     </LinearLayout>
@@ -91,6 +93,7 @@
             android:layout_height="50dp"
             android:background="@null"
             android:scaleType="centerInside"
+            android:layout_margin="20dp"
             app:srcCompat="@drawable/googlelogo" />
 
         <ImageButton
@@ -99,6 +102,7 @@
             android:layout_height="50dp"
             android:background="@null"
             android:scaleType="centerInside"
+            android:layout_margin="20dp"
             app:srcCompat="@drawable/facebooklogo" />
     </LinearLayout>
 
