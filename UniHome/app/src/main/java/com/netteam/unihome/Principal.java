@@ -60,6 +60,7 @@ public class Principal extends FragmentActivity implements OnMapReadyCallback {
         marcador.position(ubicacion).title("Ubicacion Actual");
         mMap.addMarker(marcador);
         mMap.moveCamera(CameraUpdateFactory.newLatLng(ubicacion));
+        mMap.moveCamera(CameraUpdateFactory.zoomTo(15));
     }
 
     ActivityResultLauncher<String> solicitarPermisoUbicacion = registerForActivityResult(
