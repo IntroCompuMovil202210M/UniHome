@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
@@ -21,7 +22,7 @@ import com.google.firebase.auth.FirebaseUser;
 public class Inicio extends AppCompatActivity {
 
     Button botonRegistroMain,botonEntrar;
-    EditText email, contrasena;
+    EditText correo, contrasena;
     private FirebaseAuth autenticacion;
 
     @Override
@@ -32,7 +33,7 @@ public class Inicio extends AppCompatActivity {
 
         botonRegistroMain = findViewById(R.id.botonRegistrar);
         botonEntrar = findViewById(R.id.botonEntrar);
-        email = findViewById(R.id.email);
+        correo = findViewById(R.id.email);
         contrasena = findViewById(R.id.contrasena);
         autenticacion = FirebaseAuth.getInstance();
 
@@ -50,38 +51,48 @@ public class Inicio extends AppCompatActivity {
         }
     };
 
-    private boolean validarDatos(){
-        if(!email.getText().toString().isEmpty() && !contrasena.getText().toString().isEmpty()){
-            return true;
-        }else{
-            return false;
-        }
-    }
-
     private View.OnClickListener iniciarSesion = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-            if(validarDatos()){
-                autenticacion.signInWithEmailAndPassword(email.getText().toString(), contrasena.getText().toString()).addOnCompleteListener(Inicio.this,login);
+            if(validateForm()){
+                login(correo.getText().toString(),contrasena.getText().toString());
             }else{
                 Toast.makeText(Inicio.this, "Ingrese todos datos para iniciar sesión.", Toast.LENGTH_SHORT).show();
             }
         }
     };
 
-    private OnCompleteListener<AuthResult> login = new OnCompleteListener<AuthResult>() {
-        @Override
-        public void onComplete(@NonNull Task<AuthResult> task) {
-            if (task.isSuccessful()) {
-                Toast.makeText(Inicio.this, "Inicio de sesión exitoso.", Toast.LENGTH_SHORT).show();
-                FirebaseUser user = autenticacion.getCurrentUser();
-                updateUI(user);
-            }else{
-                Toast.makeText(Inicio.this, "Inicio de sesión fallido.", Toast.LENGTH_SHORT).show();
-                updateUI(null);
-            }
+    private boolean validateForm() {
+        boolean valid = true;
+        String email = correo.getText().toString();
+        if (TextUtils.isEmpty(email)) {
+            valid = false;
         }
-    };
+        String password = contrasena.getText().toString();
+        if (TextUtils.isEmpty(password)) {
+            valid = false;
+        }
+        return valid;
+    }
+
+    private void login(String email, String password) {
+        if (validateForm()) {
+            autenticacion.signInWithEmailAndPassword(email, password)
+                    .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if (task.isSuccessful()) {
+                                Toast.makeText(Inicio.this, "Login satisfactorio.", Toast.LENGTH_SHORT).show();
+                                FirebaseUser user = autenticacion.getCurrentUser();
+                                updateUI(user);
+                            } else {
+                                Toast.makeText(Inicio.this, "Login fallido.", Toast.LENGTH_SHORT).show();
+                                updateUI(null);
+                            }
+                        }
+                    });
+        }
+    }
 
 
     @Override
@@ -93,11 +104,11 @@ public class Inicio extends AppCompatActivity {
 
     private void updateUI(FirebaseUser currentUser){
         if(currentUser!=null){
-            Intent intent = new Intent(getBaseContext(), Inicio.class);
+            Intent intent = new Intent(Inicio.this, Principal.class);
             intent.putExtra("user", currentUser.getEmail());
             startActivity(intent);
         } else {
-            email.setText("");
+            correo.setText("");
             contrasena.setText("");
         }
     }
