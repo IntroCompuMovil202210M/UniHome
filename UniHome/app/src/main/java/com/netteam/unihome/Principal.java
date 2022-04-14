@@ -71,7 +71,10 @@ public class Principal extends FragmentActivity implements OnMapReadyCallback {
                     if(result == true){
                         mFusedLocationClient.getLastLocation().addOnSuccessListener(Principal.this,ubicacionObtenida);
                     }else{
-                        Toast.makeText(Principal.this, "No se ha otorgado el permiso para la ubicacion.", Toast.LENGTH_SHORT).show();
+                        if(shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_FINE_LOCATION))
+                        {
+                            Toast.makeText(Principal.this, "No se ha otorgado el permiso para la ubicacion.", Toast.LENGTH_SHORT).show();
+                        }
                     }
                 }
             });
