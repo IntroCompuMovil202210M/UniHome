@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1052453790980",
+    "project_id": "unihome-347203",
+    "storage_bucket": "unihome-347203.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1052453790980:android:783985c2e5d47b8a999c51",
+        "android_client_info": {
+          "package_name": "com.netteam.unihome"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1052453790980-gfgte5pd1cg3fqp1b7eshmemasi20l09.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB8g5mnggnqBl7uSpzJkwPxag1J8LKcbzo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1052453790980-gfgte5pd1cg3fqp1b7eshmemasi20l09.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

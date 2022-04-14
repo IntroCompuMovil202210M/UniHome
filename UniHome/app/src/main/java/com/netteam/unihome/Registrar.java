@@ -12,7 +12,7 @@ import android.widget.Toast;
 public class Registrar extends AppCompatActivity {
 
     Button botonRegistrar;
-
+ 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
