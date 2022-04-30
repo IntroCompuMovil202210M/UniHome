@@ -37,13 +37,97 @@ public class Inicio extends AppCompatActivity {
         contrasena = findViewById(R.id.contrasena);
         autenticacion = FirebaseAuth.getInstance();
 
-        botonRegistroMain.setOnClickListener(registrarse);
+        botonEntrar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                loggearUsuario();
+            }
+        });
 
-        botonEntrar.setOnClickListener(iniciarSesion);
+        /*botonRegistroMain.setOnClickListener(registrarse);
+
+        botonEntrar.setOnClickListener(iniciarSesion);*/
 
     }
 
-    private View.OnClickListener registrarse = new View.OnClickListener() {
+    private void loggearUsuario(){
+        String correoE = correo.getText().toString();
+        String contrasenaE = contrasena.getText().toString();
+
+        if(validarCampos(correoE,contrasenaE)){
+            autenticacion.signInWithEmailAndPassword(correoE,contrasenaE).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                @Override
+                public void onComplete(@NonNull Task<AuthResult> task) {
+                    if(task.isSuccessful()){
+                        Log.i("INFO","LOGGEADO CORRECTO");
+                        FirebaseUser usuarioActual = autenticacion.getCurrentUser();
+                        updateUI(usuarioActual);
+                    }else{
+                        String error = task.getException().getMessage();
+                        Log.i("INFO",error);
+                    }
+                }
+            });
+        }else{
+            correo.setText("");
+            contrasena.setText("");
+        }
+    }
+
+    private boolean validarCampos(String email,String contra){
+        if(TextUtils.isEmpty(email) || TextUtils.isEmpty(contra)){
+            if(TextUtils.isEmpty(email) && TextUtils.isEmpty(contra)) {
+                Toast.makeText(this,"No se ha Ingresado el Email y la Contraseña",Toast.LENGTH_LONG).show();
+            }else{
+                if(TextUtils.isEmpty(email)){
+                    Toast.makeText(this,"No se ha Ingresado el Email",Toast.LENGTH_LONG).show();
+                }
+                if(TextUtils.isEmpty(contra)){
+                    Toast.makeText(this,"No se ha Ingresado la Contraseña",Toast.LENGTH_LONG).show();
+                }
+            }
+            return false;
+        }else{
+            if(validarCorreo(email) && validarContra(contra)){
+                return true;
+            }else{
+                if(!validarCorreo(email) && !validarContra(contra))
+                    Toast.makeText(this,"Correo y Contraseña no Validos",Toast.LENGTH_LONG).show();
+                else{
+                    if(!validarCorreo(email))
+                        Toast.makeText(this,"Correo Ingresado no Valido",Toast.LENGTH_LONG).show();
+                    if(!validarContra(contra))
+                        Toast.makeText(this,"Contraseña Ingresada no Valida",Toast.LENGTH_LONG).show();
+                }
+                return false;
+            }
+        }
+    }
+
+    private boolean validarCorreo(String email){
+        if(!email.contains("@") || !email.contains(".") || email.length() < 5)
+            return false;
+        return true;
+    }
+
+    private boolean validarContra(String contra){
+        if(contra.length() < 4)
+            return false;
+        return true;
+    }
+
+    private void updateUI(FirebaseUser usuarioActual){
+        if(usuarioActual != null){
+            Intent actividadInicio = new Intent(this,Principal.class);
+            startActivity(actividadInicio);
+        }else{
+            correo.setText("");
+            contrasena.setText("");
+        }
+    }
+
+
+    /*private View.OnClickListener registrarse = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
             Intent actividadRegistro = new Intent(view.getContext(),Registrar.class);
@@ -111,6 +195,5 @@ public class Inicio extends AppCompatActivity {
             correo.setText("");
             contrasena.setText("");
         }
-    }
-
+    }*/
 }
