@@ -20,7 +20,7 @@
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyC9eWyqzGY5z9W5s1oXOx9DSCP3cOwJBOA"
+          "current_key": "${CLAVE_FB}"
         }
       ],
       "services": {
