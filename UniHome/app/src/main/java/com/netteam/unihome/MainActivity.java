@@ -42,10 +42,25 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+<<<<<<< Updated upstream
+=======
+<<<<<<< HEAD
+        botonRegistroMain.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                registrarNuevoUsuario();
+            }
+        });
+=======
+>>>>>>> Stashed changes
         /*botonRegistroMain.setOnClickListener(registrarse);
 
         botonEntrar.setOnClickListener(iniciarSesion);*/
 
+<<<<<<< Updated upstream
+=======
+>>>>>>> aa6d18efac2d86f0b66d8d2c510ae1ce21547020
+>>>>>>> Stashed changes
     }
 
     private void loggearUsuario(){
@@ -131,4 +146,14 @@ public class MainActivity extends AppCompatActivity {
             contrasena.setText("");
         }
     }
+<<<<<<< Updated upstream
+=======
+<<<<<<< HEAD
+
+    private void registrarNuevoUsuario(){
+        startActivity(new Intent(this,Registro.class));
+    }
+=======
+>>>>>>> aa6d18efac2d86f0b66d8d2c510ae1ce21547020
+>>>>>>> Stashed changes
 }
