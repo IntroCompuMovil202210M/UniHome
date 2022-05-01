@@ -3,11 +3,9 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/Semestre 2022-1/Movil/Git Grupo NetTeam/UniHome/UniHome/app/src/main/res/layout/activity_inicio.xml" value="0.21784420289855072" />
-        <entry key="..\:/Semestre 2022-1/Movil/Git Grupo NetTeam/UniHome/UniHome/app/src/main/res/layout/activity_principal.xml" value="0.1852355072463768" />
-        <entry key="..\:/Semestre 2022-1/Movil/Git Grupo NetTeam/UniHome/UniHome/app/src/main/res/layout/activity_registrar.xml" value="0.1852355072463768" />
-        <entry key="..\:/Users/luisd/Documents/GitHub/UniHome/UniHome/app/src/main/res/layout/activity_inicio.xml" value="0.14130434782608695" />
-        <entry key="..\:/Users/luisd/Documents/GitHub/UniHome/UniHome/app/src/main/res/layout/activity_registrar.xml" value="0.14130434782608695" />
+        <entry key="..\:/Semestre 2022-1/Movil/Git Grupo NetTeam/UniHome/UniHome/app/src/main/res/drawable-v24/estilo_edittext.xml" value="0.1185" />
+        <entry key="..\:/Semestre 2022-1/Movil/Git Grupo NetTeam/UniHome/UniHome/app/src/main/res/layout/activity_main.xml" value="0.12158054711246201" />
+        <entry key="..\:/Semestre 2022-1/Movil/Git Grupo NetTeam/UniHome/UniHome/app/src/main/res/layout/activity_principal.xml" value="0.25" />
       </map>
     </option>
   </component>
