@@ -7,8 +7,11 @@ import androidx.fragment.app.FragmentActivity;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -20,6 +23,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
 import com.netteam.unihome.databinding.ActivityPrincipalBinding;
 
 public class Principal extends FragmentActivity implements OnMapReadyCallback {
@@ -29,6 +33,8 @@ public class Principal extends FragmentActivity implements OnMapReadyCallback {
     private FusedLocationProviderClient mFusedLocationClient;
     private LatLng ubicacion;
     private MarkerOptions marcador;
+    private Button logOut;
+    private FirebaseAuth autenticacion;
 
     @SuppressLint("MissingPermission")
     @Override
@@ -38,8 +44,12 @@ public class Principal extends FragmentActivity implements OnMapReadyCallback {
         marcador = new MarkerOptions();
         ubicacion = new LatLng(0,0);
 
+        autenticacion = FirebaseAuth.getInstance();
+
         binding = ActivityPrincipalBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        logOut = findViewById(R.id.CerrarSesion);
 
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
 
@@ -50,6 +60,16 @@ public class Principal extends FragmentActivity implements OnMapReadyCallback {
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
+        logOut.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                autenticacion.signOut();
+                Intent intent = new Intent(Principal.this,MainActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+            }
+        });
     }
 
     @Override
