@@ -58,6 +58,9 @@ public class MainActivity extends AppCompatActivity {
                 public void onComplete(@NonNull Task<AuthResult> task) {
                     if(task.isSuccessful()){
                         Log.i("INFO","LOGGEADO CORRECTO");
+                        MetodosFB.IniciarBD();
+                        //Arrendatario datosUsuario = MetodosFB.buscarArrendatario(autenticacion.getUid());
+                        //Toast.makeText(MainActivity.this, "Nombre:"+datosUsuario.getNombre()+" Apellido:"+datosUsuario.getApellido(), Toast.LENGTH_SHORT).show();
                         FirebaseUser usuarioActual = autenticacion.getCurrentUser();
                         updateUI(usuarioActual);
                     }else{

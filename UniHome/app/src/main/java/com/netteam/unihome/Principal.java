@@ -35,6 +35,7 @@ public class Principal extends FragmentActivity implements OnMapReadyCallback {
     private MarkerOptions marcador;
     private Button logOut;
     private FirebaseAuth autenticacion;
+    private Arrendatario datosUsuario;
 
     @SuppressLint("MissingPermission")
     @Override
@@ -70,6 +71,7 @@ public class Principal extends FragmentActivity implements OnMapReadyCallback {
                 startActivity(intent);
             }
         });
+
     }
 
     @Override
