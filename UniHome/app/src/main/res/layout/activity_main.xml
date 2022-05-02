@@ -18,7 +18,7 @@
     <EditText
         android:id="@+id/email"
         style="@style/Widget.AppCompat.EditText"
-        android:layout_width="300dp"
+        android:layout_width="350dp"
         android:layout_height="50dp"
         android:layout_marginTop="8dp"
         android:background="@drawable/estilo_edittext"
@@ -34,15 +34,15 @@
 
     <EditText
         android:id="@+id/contrasena"
-        android:layout_width="300dp"
+        android:layout_width="350dp"
         android:layout_height="50dp"
         android:layout_marginTop="8dp"
+        android:background="@drawable/estilo_edittext"
         android:ems="10"
         android:hint="@string/Contraseña"
         android:inputType="textPassword"
-        android:textColorHint="@color/ColorLogoUnihome"
         android:textColor="@color/ColorLogoUnihome"
-        android:background="@drawable/estilo_edittext"
+        android:textColorHint="@color/ColorLogoUnihome"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
