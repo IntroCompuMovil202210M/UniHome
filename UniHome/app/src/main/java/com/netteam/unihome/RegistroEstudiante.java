@@ -26,10 +26,10 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.HashMap;
 import java.util.Map;
 
-public class RegistroArrendatario extends AppCompatActivity {
+public class RegistroEstudiante extends AppCompatActivity {
 
     Button botonRegistrar;
-    EditText nombre,apellido,emailRegistro,contraseña,confirmarc;
+    EditText nombre,apellido,emailRegistro,contraseña,confirmarc, universidad, programa;
     FirebaseAuth autenticacion;
     FirebaseFirestore db;
 
@@ -37,16 +37,18 @@ public class RegistroArrendatario extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
-        setContentView(R.layout.activity_registro);
+        setContentView(R.layout.activity_registro_estudiante);
 
         autenticacion = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
-        nombre = findViewById(R.id.nombreA);
-        apellido = findViewById(R.id.apellidoA);
-        emailRegistro = findViewById(R.id.emailRegistroA);
-        contraseña = findViewById(R.id.contrasenaRegistroA);
-        confirmarc = findViewById(R.id.cofirmacionContrasenaA);
-        botonRegistrar = findViewById(R.id.registrarseA);
+        nombre = findViewById(R.id.nombreE);
+        apellido = findViewById(R.id.apellidoE);
+        emailRegistro = findViewById(R.id.emailRegistroE);
+        contraseña = findViewById(R.id.contrasenaRegistroE);
+        confirmarc = findViewById(R.id.cofirmacionContrasenaE);
+        botonRegistrar = findViewById(R.id.registrarseE);
+        universidad = findViewById(R.id.universidad);
+        programa = findViewById(R.id.programa);
 
         botonRegistrar.setOnClickListener(registro);
     }
@@ -65,14 +67,15 @@ public class RegistroArrendatario extends AppCompatActivity {
         public void onClick(View view) {
             if(validar(nombre.getText().toString(),apellido.getText().toString(),
                     emailRegistro.getText().toString(),contraseña.getText().toString(),
-                    confirmarc.getText().toString())){
+                    confirmarc.getText().toString(), universidad.getText().toString(),
+                    programa.getText().toString())){
                 registrarUsuario();
             }
         }
     };
 
-    private boolean validar(String nombre, String apellido, String email, String contra, String conf){
-        if(TextUtils.isEmpty(nombre) || TextUtils.isEmpty(apellido) || TextUtils.isEmpty(email) || TextUtils.isEmpty(contra) || TextUtils.isEmpty(conf)){
+    private boolean validar(String nombre, String apellido, String email, String contra, String conf, String universidad, String programa){
+        if(TextUtils.isEmpty(nombre) || TextUtils.isEmpty(apellido) || TextUtils.isEmpty(email) || TextUtils.isEmpty(contra) || TextUtils.isEmpty(conf) || TextUtils.isEmpty(universidad) || TextUtils.isEmpty(programa)){
             Toast.makeText(this, "Debe rellenar todos los campos.", Toast.LENGTH_SHORT).show();
             return false;
         }else if (!validarCorreo(email)){
@@ -109,7 +112,7 @@ public class RegistroArrendatario extends AppCompatActivity {
                     Log.i("BD","Se creo el usuario.");
                     FirebaseUser usuario = autenticacion.getCurrentUser();
                     usuario.updateProfile(new UserProfileChangeRequest.Builder().setDisplayName(nombre.getText().toString()).build());
-                    agregarArrendatario(usuario.getUid());
+                    agregarEstudiante(usuario.getUid());
                 }else{
                     Log.i("BD","El usuario no se creo.");
                 }
@@ -117,25 +120,27 @@ public class RegistroArrendatario extends AppCompatActivity {
         });
     }
 
-    private void agregarArrendatario(String id){
+    private void agregarEstudiante(String id){
         Log.i("BD","ID:"+id);
-        Map<String, Object> arrendatario = new HashMap<>();
-        arrendatario.put("nombre", nombre.getText().toString());
-        arrendatario.put("apellido", apellido.getText().toString());
+        Map<String, Object> estudiante = new HashMap<>();
+        estudiante.put("nombre", nombre.getText().toString());
+        estudiante.put("apellido", apellido.getText().toString());
+        estudiante.put("universidad",universidad.getText().toString());
+        estudiante.put("programa", programa.getText().toString());
 
-        db.collection("arrendatarios").document(id)
-                .set(arrendatario)
+        db.collection("estudiantes").document(id)
+                .set(estudiante)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        Toast.makeText(RegistroArrendatario.this, "Se creó el usuario correctamente.", Toast.LENGTH_SHORT).show();
-                        startActivity(new Intent(RegistroArrendatario.this,MainActivity.class));
+                        Toast.makeText(RegistroEstudiante.this, "Se creó el usuario correctamente.", Toast.LENGTH_SHORT).show();
+                        startActivity(new Intent(RegistroEstudiante.this,MainActivity.class));
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(RegistroArrendatario.this, "No se pudo crear el usuario.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(RegistroEstudiante.this, "No se pudo crear el usuario.", Toast.LENGTH_SHORT).show();
                     }
                 });
     }

@@ -23,7 +23,7 @@
         android:layout_marginTop="8dp"
         android:background="@drawable/estilo_edittext"
         android:ems="10"
-        android:hint="@string/Usuario"
+        android:hint="Correo Electrónico"
         android:inputType="textEmailAddress"
         android:textColor="@color/ColorLogoUnihome"
         android:textColorHint="@color/ColorLogoUnihome"
@@ -65,7 +65,7 @@
             android:layout_margin="5dp"
             android:layout_weight="0.5"
             android:background="@drawable/estilo_edittext"
-            android:text="Iniciar" />
+            android:text="Iniciar Sesion" />
 
     </LinearLayout>
 
@@ -102,8 +102,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
+        android:text="O registrarse como"
         android:textSize="20dp"
-        android:text="O regisitrate como"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"

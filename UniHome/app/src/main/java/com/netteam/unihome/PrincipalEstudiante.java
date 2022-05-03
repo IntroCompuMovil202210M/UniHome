@@ -26,7 +26,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.netteam.unihome.databinding.ActivityPrincipalBinding;
 
-public class PrincipalArrendatario extends FragmentActivity implements OnMapReadyCallback {
+public class PrincipalEstudiante extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
     private ActivityPrincipalBinding binding;
@@ -50,7 +50,7 @@ public class PrincipalArrendatario extends FragmentActivity implements OnMapRead
         binding = ActivityPrincipalBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        logOut = findViewById(R.id.CerrarSesionA);
+        logOut = findViewById(R.id.CerrarSesionE);
 
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
 
@@ -59,14 +59,14 @@ public class PrincipalArrendatario extends FragmentActivity implements OnMapRead
         mFusedLocationClient.getLastLocation().addOnSuccessListener(this,ubicacionObtenida);
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.mapA);
+                .findFragmentById(R.id.mapE);
         mapFragment.getMapAsync(this);
 
         logOut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 autenticacion.signOut();
-                Intent intent = new Intent(PrincipalArrendatario.this,MainActivity.class);
+                Intent intent = new Intent(PrincipalEstudiante.this,MainActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
             }
@@ -92,11 +92,11 @@ public class PrincipalArrendatario extends FragmentActivity implements OnMapRead
                 @Override
                 public void onActivityResult(Boolean result) {
                     if(result == true){
-                        mFusedLocationClient.getLastLocation().addOnSuccessListener(PrincipalArrendatario.this,ubicacionObtenida);
+                        mFusedLocationClient.getLastLocation().addOnSuccessListener(PrincipalEstudiante.this,ubicacionObtenida);
                     }else{
                         if(shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_FINE_LOCATION))
                         {
-                            Toast.makeText(PrincipalArrendatario.this, "No se ha otorgado el permiso para la ubicacion.", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(PrincipalEstudiante.this, "No se ha otorgado el permiso para la ubicacion.", Toast.LENGTH_SHORT).show();
                         }
                     }
                 }

@@ -4,10 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".RegistroArrendatario">
+    tools:context=".RegistroEstudiante">
 
     <TextView
-        android:id="@+id/TextoRegistroA"
+        android:id="@+id/TextoRegistroE"
         android:layout_width="166dp"
         android:layout_height="72dp"
         android:layout_marginTop="60dp"
@@ -22,27 +22,27 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
-        android:id="@+id/logoRegistroA"
+        android:id="@+id/logoRegistroE"
         android:layout_width="125dp"
         android:layout_height="125dp"
         android:layout_marginTop="30dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.302"
-        app:layout_constraintStart_toEndOf="@+id/TextoRegistroA"
+        app:layout_constraintStart_toEndOf="@+id/TextoRegistroE"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/logo2" />
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/TextoRegistroA">
+        app:layout_constraintTop_toBottomOf="@+id/TextoRegistroE">
 
         <EditText
-            android:id="@+id/nombreA"
+            android:id="@+id/nombreE"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_marginTop="10dp"
@@ -54,7 +54,7 @@
             android:textColorHint="@color/Blue" />
 
         <EditText
-            android:id="@+id/apellidoA"
+            android:id="@+id/apellidoE"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_marginTop="8dp"
@@ -66,9 +66,9 @@
             android:textColorHint="@color/Blue" />
 
         <EditText
-            android:id="@+id/emailRegistroA"
+            android:id="@+id/emailRegistroE"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="50dp"
             android:layout_marginTop="8dp"
             android:alpha="0.5"
             android:background="@drawable/estilo_edittext"
@@ -78,7 +78,7 @@
             android:textColorHint="@color/Blue" />
 
         <EditText
-            android:id="@+id/contrasenaRegistroA"
+            android:id="@+id/contrasenaRegistroE"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_marginTop="8dp"
@@ -90,7 +90,7 @@
             android:textColorHint="@color/Blue" />
 
         <EditText
-            android:id="@+id/cofirmacionContrasenaA"
+            android:id="@+id/cofirmacionContrasenaE"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_marginTop="8dp"
@@ -101,15 +101,40 @@
             android:inputType="textPassword"
             android:textColorHint="@color/Blue" />
 
-        <Button
-            android:id="@+id/registrarseA"
+        <EditText
+            android:id="@+id/universidad"
             android:layout_width="match_parent"
-            android:layout_marginTop="20dp"
+            android:layout_height="50dp"
+            android:alpha="0.5"
+            android:background="@drawable/estilo_edittext"
+            android:ems="10"
+            android:layout_marginTop="8dp"
+            android:hint="Universidad"
+            android:inputType="text"
+            android:textColorHint="@color/Blue" />
+
+        <EditText
+            android:id="@+id/programa"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:alpha="0.5"
+            android:background="@drawable/estilo_edittext"
+            android:ems="10"
+            android:layout_marginTop="8dp"
+            android:hint="Programa Académico"
+            android:inputType="text"
+            android:textColorHint="@color/Blue" />
+
+        <Button
+            android:id="@+id/registrarseE"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
             android:layout_marginBottom="50dp"
             android:backgroundTint="@color/Blue"
             android:text="Registrarse"
             android:textColor="@color/white" />
+
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

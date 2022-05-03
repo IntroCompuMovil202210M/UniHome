@@ -23,7 +23,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 public class MainActivity extends AppCompatActivity {
 
-    Button botonRegistrar,botonEntrar;
+    Button botonRegistrarA,botonRegistrarE,botonEntrar;
     EditText correo, contrasena;
     private FirebaseAuth autenticacion;
     private FirebaseFirestore db;
@@ -37,7 +37,8 @@ public class MainActivity extends AppCompatActivity {
 
         db = FirebaseFirestore.getInstance();
         arrendatario = null;
-        botonRegistrar = findViewById(R.id.botonRegistrarA);
+        botonRegistrarA = findViewById(R.id.botonRegistrarA);
+        botonRegistrarE = findViewById(R.id.botonRegistrarE);
         botonEntrar = findViewById(R.id.botonEntrar);
         correo = findViewById(R.id.email);
         contrasena = findViewById(R.id.contrasena);
@@ -50,7 +51,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        botonRegistrar.setOnClickListener(registrarse);
+        botonRegistrarA.setOnClickListener(registrarArrendatario);
+        botonRegistrarE.setOnClickListener(registrarEstudiante);
     }
 
     private void loggearUsuario(){
@@ -65,7 +67,6 @@ public class MainActivity extends AppCompatActivity {
                         Log.i("INFO","LOGGEADO CORRECTO");
                         FirebaseUser usuarioActual = autenticacion.getCurrentUser();
                         buscarArrendatario(autenticacion.getUid());
-                        updateUI(usuarioActual);
                     }else{
                         String error = task.getException().getMessage();
                         Log.i("INFO",error);
@@ -151,7 +152,7 @@ public class MainActivity extends AppCompatActivity {
                         Intent iniciarArrendatario = new Intent(MainActivity.this, PrincipalArrendatario.class);
                         startActivity(iniciarArrendatario);
                     } else {
-                        //Toast.makeText(MainActivity.this, "No existe el arrendatario", Toast.LENGTH_SHORT).show();
+                        buscarEstudiante(id);
                     }
                 } else {
                     Log.i("BD", "Excepción: "+ task.getException());
@@ -170,10 +171,10 @@ public class MainActivity extends AppCompatActivity {
                     if (document.exists()) {
                         estudiante = document.toObject(Estudiante.class);
                         Toast.makeText(MainActivity.this, "Bienvenido/a "+estudiante.getNombre(), Toast.LENGTH_SHORT).show();
-                        Intent iniciarArrendatario = new Intent(MainActivity.this, PrincipalArrendatario.class);
-                        startActivity(iniciarArrendatario);
+                        Intent iniciarEstudiante = new Intent(MainActivity.this, PrincipalArrendatario.class);
+                        startActivity(iniciarEstudiante);
                     } else {
-                        //Toast.makeText(MainActivity.this, "No existe el arrendatario", Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(MainActivity.this, "No existe el estudiante", Toast.LENGTH_SHORT).show();
                     }
                 } else {
                     Log.i("BD", "Excepción: "+ task.getException());
@@ -182,11 +183,19 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private View.OnClickListener registrarse = new View.OnClickListener() {
+    private View.OnClickListener registrarArrendatario = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-            Intent actividadRegistro = new Intent(MainActivity.this, RegistroArrendatario.class);
-            startActivity(actividadRegistro);
+            Intent registroArrendatario = new Intent(MainActivity.this, RegistroArrendatario.class);
+            startActivity(registroArrendatario);
+        }
+    };
+
+    private View.OnClickListener registrarEstudiante = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            Intent registroEstudiante = new Intent(MainActivity.this, RegistroEstudiante.class);
+            startActivity(registroEstudiante);
         }
     };
 }
