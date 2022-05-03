@@ -68,13 +68,13 @@
             android:text="Iniciar" />
 
         <Button
-            android:id="@+id/botonRegistrar"
+            android:id="@+id/botonRegistrarA"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:background="@drawable/estilo_edittext"
             android:layout_margin="5dp"
             android:layout_weight="0.5"
-            android:text="Registrarse" />
+            android:background="@drawable/estilo_edittext"
+            android:text="Registrarse como Arrendatario" />
     </LinearLayout>
 
     <LinearLayout

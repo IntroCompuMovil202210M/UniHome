@@ -20,12 +20,12 @@
             android:value="${CLAVE_API}" />
 
         <activity
-            android:name=".Principal"
+            android:name=".PrincipalArrendatario"
             android:exported="false"
             android:label="@string/title_activity_principal" />
 
         <activity
-            android:name=".Registro"
+            android:name=".RegistroArrendatario"
             android:exported="false"
             android:label="Registro"/>
 

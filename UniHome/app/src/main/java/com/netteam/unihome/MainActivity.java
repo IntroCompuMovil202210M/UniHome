@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
 
         db = FirebaseFirestore.getInstance();
         arrendatario = null;
-        botonRegistrar = findViewById(R.id.botonRegistrar);
+        botonRegistrar = findViewById(R.id.botonRegistrarA);
         botonEntrar = findViewById(R.id.botonEntrar);
         correo = findViewById(R.id.email);
         contrasena = findViewById(R.id.contrasena);
@@ -130,7 +130,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void updateUI(FirebaseUser usuarioActual){
         if(usuarioActual != null){
-            Intent actividadInicio = new Intent(this,Principal.class);
+            Intent actividadInicio = new Intent(this, PrincipalArrendatario.class);
             startActivity(actividadInicio);
         }else{
             correo.setText("");
@@ -147,7 +147,31 @@ public class MainActivity extends AppCompatActivity {
                     DocumentSnapshot document = task.getResult();
                     if (document.exists()) {
                         arrendatario = document.toObject(Arrendatario.class);
-                        //Toast.makeText(MainActivity.this, "Nombre:"+arrendatario.getNombre()+" Apellido:"+arrendatario.getApellido(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MainActivity.this, "Bienvenido/a "+arrendatario.getNombre(), Toast.LENGTH_SHORT).show();
+                        Intent iniciarArrendatario = new Intent(MainActivity.this, PrincipalArrendatario.class);
+                        startActivity(iniciarArrendatario);
+                    } else {
+                        //Toast.makeText(MainActivity.this, "No existe el arrendatario", Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Log.i("BD", "Excepción: "+ task.getException());
+                }
+            }
+        });
+    }
+
+    private void buscarEstudiante(String id){
+        DocumentReference docRef = db.collection("estudiantes").document(id);
+        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        estudiante = document.toObject(Estudiante.class);
+                        Toast.makeText(MainActivity.this, "Bienvenido/a "+estudiante.getNombre(), Toast.LENGTH_SHORT).show();
+                        Intent iniciarArrendatario = new Intent(MainActivity.this, PrincipalArrendatario.class);
+                        startActivity(iniciarArrendatario);
                     } else {
                         //Toast.makeText(MainActivity.this, "No existe el arrendatario", Toast.LENGTH_SHORT).show();
                     }
@@ -161,7 +185,7 @@ public class MainActivity extends AppCompatActivity {
     private View.OnClickListener registrarse = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-            Intent actividadRegistro = new Intent(MainActivity.this,Registro.class);
+            Intent actividadRegistro = new Intent(MainActivity.this, RegistroArrendatario.class);
             startActivity(actividadRegistro);
         }
     };

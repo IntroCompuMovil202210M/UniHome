@@ -26,7 +26,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Registro extends AppCompatActivity {
+public class RegistroArrendatario extends AppCompatActivity {
 
     Button botonRegistrar;
     EditText nombre,apellido,emailRegistro,contraseña,confirmarc;
@@ -129,13 +129,14 @@ public class Registro extends AppCompatActivity {
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        Toast.makeText(Registro.this, "Se creó el usuario correctamente.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(RegistroArrendatario.this, "Se creó el usuario correctamente.", Toast.LENGTH_SHORT).show();
+                        startActivity(new Intent(RegistroArrendatario.this,MainActivity.class));
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(Registro.this, "No se pudo crear el usuario.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(RegistroArrendatario.this, "No se pudo crear el usuario.", Toast.LENGTH_SHORT).show();
                     }
                 });
     }
