@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Registrar">
+    tools:context=".Registro">
 
     <TextView
         android:id="@+id/TextoRegistro"
@@ -33,14 +33,14 @@
         app:srcCompat="@drawable/logo2" />
 
     <EditText
-        android:id="@+id/NombreUsuarioRegistro"
+        android:id="@+id/nombre"
         android:layout_width="300dp"
         android:layout_height="50dp"
         android:layout_marginTop="80dp"
         android:alpha="0.5"
         android:backgroundTint="@color/Blue"
         android:ems="10"
-        android:hint="Nombre de Usuario"
+        android:hint="Nombre"
         android:inputType="textPersonName"
         android:textColorHint="@color/Blue"
         app:layout_constraintEnd_toEndOf="parent"
@@ -49,39 +49,39 @@
         app:layout_constraintTop_toBottomOf="@+id/TextoRegistro" />
 
     <EditText
-        android:id="@+id/emailUsuarioRegistro"
+        android:id="@+id/apellido"
         android:layout_width="300dp"
         android:layout_height="50dp"
         android:layout_marginTop="8dp"
         android:alpha="0.5"
         android:backgroundTint="@color/Blue"
         android:ems="10"
-        android:hint="Correo Electronico"
-        android:inputType="textEmailAddress"
+        android:hint="Apellido"
+        android:inputType="textPersonName"
         android:textColorHint="@color/Blue"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/NombreUsuarioRegistro" />
+        app:layout_constraintTop_toBottomOf="@+id/nombre" />
 
     <EditText
-        android:id="@+id/FechaRegistro"
+        android:id="@+id/emailRegistro"
         android:layout_width="wrap_content"
         android:layout_height="50dp"
         android:layout_marginTop="8dp"
         android:alpha="0.5"
         android:backgroundTint="@color/Blue"
         android:ems="10"
-        android:hint="DD/MM/YYYY"
-        android:inputType="date"
+        android:hint="Correo Electrónico"
+        android:inputType="textEmailAddress"
         android:textColorHint="@color/Blue"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.273"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/emailUsuarioRegistro" />
+        app:layout_constraintTop_toBottomOf="@+id/apellido" />
 
     <EditText
-        android:id="@+id/editTextTextPassword"
+        android:id="@+id/contrasenaRegistro"
         android:layout_width="300dp"
         android:layout_height="50dp"
         android:layout_marginTop="8dp"
@@ -94,13 +94,13 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/FechaRegistro" />
+        app:layout_constraintTop_toBottomOf="@+id/emailRegistro" />
 
     <EditText
-        android:id="@+id/ConfirmarContraRegistro"
+        android:id="@+id/cofirmacionContrasena"
         android:layout_width="300dp"
         android:layout_height="50dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="32dp"
         android:alpha="0.5"
         android:backgroundTint="@color/Blue"
         android:ems="10"
@@ -108,12 +108,12 @@
         android:inputType="textPassword"
         android:textColorHint="@color/Blue"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextTextPassword" />
+        app:layout_constraintTop_toBottomOf="@+id/contrasenaRegistro" />
 
     <Button
-        android:id="@+id/BotonConfirmarRegistrar"
+        android:id="@+id/registrarse"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="50dp"
@@ -125,7 +125,7 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <Spinner
-        android:id="@+id/opcionesSpinnerReg"
+        android:id="@+id/tipoCuenta"
         android:layout_width="300dp"
         android:layout_height="50dp"
         android:layout_marginTop="8dp"
@@ -135,6 +135,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ConfirmarContraRegistro" />
+        app:layout_constraintTop_toBottomOf="@+id/cofirmacionContrasena" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

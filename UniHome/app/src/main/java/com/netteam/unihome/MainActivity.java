@@ -23,7 +23,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 public class MainActivity extends AppCompatActivity {
 
-    Button botonRegistroMain,botonEntrar;
+    Button botonRegistrar,botonEntrar;
     EditText correo, contrasena;
     private FirebaseAuth autenticacion;
     private FirebaseFirestore db;
@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
 
         db = FirebaseFirestore.getInstance();
         arrendatario = null;
-        botonRegistroMain = findViewById(R.id.botonRegistrar);
+        botonRegistrar = findViewById(R.id.botonRegistrar);
         botonEntrar = findViewById(R.id.botonEntrar);
         correo = findViewById(R.id.email);
         contrasena = findViewById(R.id.contrasena);
@@ -50,10 +50,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        /*botonRegistroMain.setOnClickListener(registrarse);
-
-        botonEntrar.setOnClickListener(iniciarSesion);*/
-
+        botonRegistrar.setOnClickListener(registrarse);
     }
 
     private void loggearUsuario(){
@@ -150,9 +147,9 @@ public class MainActivity extends AppCompatActivity {
                     DocumentSnapshot document = task.getResult();
                     if (document.exists()) {
                         arrendatario = document.toObject(Arrendatario.class);
-                        Toast.makeText(MainActivity.this, "Nombre:"+arrendatario.getNombre()+" Apellido:"+arrendatario.getApellido(), Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(MainActivity.this, "Nombre:"+arrendatario.getNombre()+" Apellido:"+arrendatario.getApellido(), Toast.LENGTH_SHORT).show();
                     } else {
-                        Toast.makeText(MainActivity.this, "No existe el arrendatario", Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(MainActivity.this, "No existe el arrendatario", Toast.LENGTH_SHORT).show();
                     }
                 } else {
                     Log.i("BD", "Excepción: "+ task.getException());
@@ -160,4 +157,12 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
+    private View.OnClickListener registrarse = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            Intent actividadRegistro = new Intent(MainActivity.this,Registro.class);
+            startActivity(actividadRegistro);
+        }
+    };
 }
