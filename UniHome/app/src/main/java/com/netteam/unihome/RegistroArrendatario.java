@@ -209,13 +209,4 @@ public class RegistroArrendatario extends AppCompatActivity {
         }
     };
 
-    ActivityResultLauncher<Uri> tomarFoto = registerForActivityResult(
-            new ActivityResultContracts.TakePicture(),
-            new ActivityResultCallback<Boolean>() {
-                @Override
-                public void onActivityResult(Boolean result) {
-                    //imagen.setImageURI(uricamara);
-                }
-            }
-    );
 }

@@ -10,24 +10,24 @@
         android:id="@+id/TextoRegistroE"
         android:layout_width="166dp"
         android:layout_height="72dp"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="28dp"
         android:autoSizeMaxTextSize="100sp"
         android:autoSizeTextType="uniform"
         android:text="Registro"
         android:textColor="@color/Blue"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.281"
+        app:layout_constraintHorizontal_bias="0.375"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
         android:id="@+id/logoRegistroE"
-        android:layout_width="125dp"
-        android:layout_height="125dp"
-        android:layout_marginTop="30dp"
+        android:layout_width="79dp"
+        android:layout_height="72dp"
+        android:layout_marginTop="28dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.302"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/TextoRegistroE"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/logo2" />
@@ -40,6 +40,13 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/TextoRegistroE">
+
+        <ImageView
+            android:id="@+id/fotoE"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            app:srcCompat="@drawable/foto_logo"
+            android:layout_gravity="center"/>
 
         <EditText
             android:id="@+id/nombreE"
