@@ -45,6 +45,7 @@ public class RegistroArrendatario extends AppCompatActivity {
     FirebaseStorage storage;
     StorageReference storageRef,perfil;
     Uri uriFoto;
+    boolean fotoSeleccionada;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +57,7 @@ public class RegistroArrendatario extends AppCompatActivity {
         db = FirebaseFirestore.getInstance();
         storage = FirebaseStorage.getInstance();
         storageRef = storage.getReference();
+        fotoSeleccionada = false;
         fotoA = findViewById(R.id.fotoA);
         nombre = findViewById(R.id.nombreA);
         apellido = findViewById(R.id.apellidoA);
@@ -99,6 +101,9 @@ public class RegistroArrendatario extends AppCompatActivity {
             return false;
         }else if (!contra.equals(conf)){
             Toast.makeText(this, "Las contraseñas no concuerdan.", Toast.LENGTH_SHORT).show();
+            return false;
+        }else if(!fotoSeleccionada){
+            Toast.makeText(this, "Debe seleccionar una foto de perfil.", Toast.LENGTH_SHORT).show();
             return false;
         }else{
             return true;
@@ -165,12 +170,13 @@ public class RegistroArrendatario extends AppCompatActivity {
                     //Carga una imagen en la vista...
                     fotoA.setImageURI(result);
                     uriFoto = result;
+                    fotoSeleccionada=true;
                 }
             }
     );
 
     public void subirFoto(){
-        perfil = storageRef.child("fotos/"+autenticacion.getUid());
+        perfil = storageRef.child("fotos/"+autenticacion.getCurrentUser().getEmail());
         UploadTask uploadTask = perfil.putFile(uriFoto);
         uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override

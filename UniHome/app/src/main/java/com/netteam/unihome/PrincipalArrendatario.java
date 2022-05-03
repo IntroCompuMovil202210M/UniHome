@@ -3,15 +3,21 @@ package com.netteam.unihome;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.location.Location;
+import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -22,9 +28,17 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.netteam.unihome.databinding.ActivityPrincipalBinding;
+import com.squareup.picasso.Picasso;
+
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 public class PrincipalArrendatario extends FragmentActivity implements OnMapReadyCallback {
 
@@ -36,6 +50,9 @@ public class PrincipalArrendatario extends FragmentActivity implements OnMapRead
     private Button logOut;
     private FirebaseAuth autenticacion;
     private Arrendatario datosUsuario;
+    //private ImageView fotoArrendatario;
+    private FirebaseStorage storage;
+    private StorageReference storageRef,perfil;
 
     @SuppressLint("MissingPermission")
     @Override
@@ -46,6 +63,10 @@ public class PrincipalArrendatario extends FragmentActivity implements OnMapRead
         ubicacion = new LatLng(0,0);
 
         autenticacion = FirebaseAuth.getInstance();
+        //fotoArrendatario = findViewById(R.id.fotoArrendatario);
+        storage = FirebaseStorage.getInstance();
+        storageRef = storage.getReference();
+        perfil = storage.getReference();
 
         binding = ActivityPrincipalBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
@@ -71,7 +92,7 @@ public class PrincipalArrendatario extends FragmentActivity implements OnMapRead
                 startActivity(intent);
             }
         });
-
+        //mostrarFoto();
     }
 
     @Override
@@ -111,4 +132,9 @@ public class PrincipalArrendatario extends FragmentActivity implements OnMapRead
             }
         }
     };
+
+    /*private void mostrarFoto(){
+        fotoArrendatario = findViewById(R.id.fotoArrendatario);
+        Picasso.get().load(autenticacion.getCurrentUser().getPhotoUrl()).into(fotoArrendatario);
+    }*/
 }
