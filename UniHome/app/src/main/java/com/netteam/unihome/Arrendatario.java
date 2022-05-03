@@ -1,7 +1,5 @@
 package com.netteam.unihome;
 
-import java.util.ArrayList;
-
 public class Arrendatario {
     private String nombre;
     private String apellido;
