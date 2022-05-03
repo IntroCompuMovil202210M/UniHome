@@ -5,17 +5,17 @@
     android:layout_height="match_parent"
     android:layout_width="match_parent"
     android:orientation="vertical"
-    tools:context=".PrincipalArrendatario">
+    tools:context=".PrincipalEstudiante">
 
     <Button
-        android:id="@+id/CerrarSesionA"
+        android:id="@+id/CerrarSesionE"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Cerrar Sesion"
         android:background="@drawable/estilo_edittext"/>
 
     <fragment
-        android:id="@+id/mapA"
+        android:id="@+id/mapE"
         android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
