@@ -1,8 +1,5 @@
 package com.netteam.unihome;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -12,24 +9,36 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 public class MainActivity extends AppCompatActivity {
 
-    Button botonRegistroMain,botonEntrar;
+    Button botonRegistrarA,botonRegistrarE,botonEntrar;
     EditText correo, contrasena;
     private FirebaseAuth autenticacion;
+    private FirebaseFirestore db;
+    private Arrendatario arrendatario;
+    private Estudiante estudiante;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        botonRegistroMain = findViewById(R.id.botonRegistrar);
+        db = FirebaseFirestore.getInstance();
+        arrendatario = null;
+        botonRegistrarA = findViewById(R.id.botonRegistrarA);
+        botonRegistrarE = findViewById(R.id.botonRegistrarE);
         botonEntrar = findViewById(R.id.botonEntrar);
         correo = findViewById(R.id.email);
         contrasena = findViewById(R.id.contrasena);
@@ -42,10 +51,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        /*botonRegistroMain.setOnClickListener(registrarse);
-
-        botonEntrar.setOnClickListener(iniciarSesion);*/
-
+        botonRegistrarA.setOnClickListener(registrarArrendatario);
+        botonRegistrarE.setOnClickListener(registrarEstudiante);
     }
 
     private void loggearUsuario(){
@@ -59,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
                     if(task.isSuccessful()){
                         Log.i("INFO","LOGGEADO CORRECTO");
                         FirebaseUser usuarioActual = autenticacion.getCurrentUser();
-                        updateUI(usuarioActual);
+                        buscarArrendatario(autenticacion.getUid());
                     }else{
                         String error = task.getException().getMessage();
                         Log.i("INFO",error);
@@ -124,11 +131,71 @@ public class MainActivity extends AppCompatActivity {
 
     private void updateUI(FirebaseUser usuarioActual){
         if(usuarioActual != null){
-            Intent actividadInicio = new Intent(this,Principal.class);
+            Intent actividadInicio = new Intent(this, PrincipalArrendatario.class);
             startActivity(actividadInicio);
         }else{
             correo.setText("");
             contrasena.setText("");
         }
     }
+
+    private void buscarArrendatario(String id){
+        DocumentReference docRef = db.collection("arrendatarios").document(id);
+        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        arrendatario = document.toObject(Arrendatario.class);
+                        Toast.makeText(MainActivity.this, "Bienvenido/a "+arrendatario.getNombre(), Toast.LENGTH_SHORT).show();
+                        Intent iniciarArrendatario = new Intent(MainActivity.this, PrincipalArrendatario.class);
+                        startActivity(iniciarArrendatario);
+                    } else {
+                        buscarEstudiante(id);
+                    }
+                } else {
+                    Log.i("BD", "Excepción: "+ task.getException());
+                }
+            }
+        });
+    }
+
+    private void buscarEstudiante(String id){
+        DocumentReference docRef = db.collection("estudiantes").document(id);
+        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        estudiante = document.toObject(Estudiante.class);
+                        Toast.makeText(MainActivity.this, "Bienvenido/a "+estudiante.getNombre(), Toast.LENGTH_SHORT).show();
+                        Intent iniciarEstudiante = new Intent(MainActivity.this, PrincipalArrendatario.class);
+                        startActivity(iniciarEstudiante);
+                    } else {
+                        //Toast.makeText(MainActivity.this, "No existe el estudiante", Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Log.i("BD", "Excepción: "+ task.getException());
+                }
+            }
+        });
+    }
+
+    private View.OnClickListener registrarArrendatario = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            Intent registroArrendatario = new Intent(MainActivity.this, RegistroArrendatario.class);
+            startActivity(registroArrendatario);
+        }
+    };
+
+    private View.OnClickListener registrarEstudiante = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            Intent registroEstudiante = new Intent(MainActivity.this, RegistroEstudiante.class);
+            startActivity(registroEstudiante);
+        }
+    };
 }

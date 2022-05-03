@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Inicio">
+    tools:context=".MainActivity">
 
     <ImageView
         android:id="@+id/logo"
@@ -23,7 +23,7 @@
         android:layout_marginTop="8dp"
         android:background="@drawable/estilo_edittext"
         android:ems="10"
-        android:hint="@string/Usuario"
+        android:hint="Correo Electrónico"
         android:inputType="textEmailAddress"
         android:textColor="@color/ColorLogoUnihome"
         android:textColorHint="@color/ColorLogoUnihome"
@@ -60,50 +60,53 @@
 
         <Button
             android:id="@+id/botonEntrar"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="0.5"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
             android:layout_margin="5dp"
+            android:layout_weight="0.5"
             android:background="@drawable/estilo_edittext"
-            android:text="Iniciar" />
+            android:text="Iniciar Sesion" />
 
-        <Button
-            android:id="@+id/botonRegistrar"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:background="@drawable/estilo_edittext"
-            android:layout_margin="5dp"
-            android:layout_weight="0.5"
-            android:text="Registrarse" />
     </LinearLayout>
 
     <LinearLayout
-        android:layout_width="0dp"
+        android:layout_width="379dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="16dp"
         android:gravity="center"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/LoginLayout">
+        app:layout_constraintTop_toBottomOf="@+id/textView2">
 
-        <ImageButton
-            android:id="@+id/botongoogle"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:background="@null"
-            android:scaleType="centerInside"
-            android:layout_margin="20dp"
-            app:srcCompat="@drawable/googlelogo" />
+        <Button
+            android:id="@+id/botonRegistrarE"
+            android:layout_width="wrap_content"
+            android:layout_height="45dp"
+            android:layout_weight="0.5"
+            android:background="@drawable/estilo_edittext"
+            android:text="Estudiante" />
 
-        <ImageButton
-            android:id="@+id/botonfacebook"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:background="@null"
-            android:scaleType="centerInside"
-            android:layout_margin="20dp"
-            app:srcCompat="@drawable/facebooklogo" />
+        <Button
+            android:id="@+id/botonRegistrarA"
+            android:layout_width="wrap_content"
+            android:layout_height="45dp"
+            android:layout_margin="5dp"
+            android:layout_weight="0.5"
+            android:background="@drawable/estilo_edittext"
+            android:text="Arrendatario" />
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="O registrarse como"
+        android:textSize="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/LoginLayout" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

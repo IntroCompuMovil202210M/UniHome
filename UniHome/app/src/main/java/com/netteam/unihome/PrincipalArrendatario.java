@@ -26,7 +26,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.netteam.unihome.databinding.ActivityPrincipalBinding;
 
-public class Principal extends FragmentActivity implements OnMapReadyCallback {
+public class PrincipalArrendatario extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
     private ActivityPrincipalBinding binding;
@@ -35,6 +35,7 @@ public class Principal extends FragmentActivity implements OnMapReadyCallback {
     private MarkerOptions marcador;
     private Button logOut;
     private FirebaseAuth autenticacion;
+    private Arrendatario datosUsuario;
 
     @SuppressLint("MissingPermission")
     @Override
@@ -49,7 +50,7 @@ public class Principal extends FragmentActivity implements OnMapReadyCallback {
         binding = ActivityPrincipalBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        logOut = findViewById(R.id.CerrarSesion);
+        logOut = findViewById(R.id.CerrarSesionA);
 
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
 
@@ -58,18 +59,19 @@ public class Principal extends FragmentActivity implements OnMapReadyCallback {
         mFusedLocationClient.getLastLocation().addOnSuccessListener(this,ubicacionObtenida);
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.map);
+                .findFragmentById(R.id.mapA);
         mapFragment.getMapAsync(this);
 
         logOut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 autenticacion.signOut();
-                Intent intent = new Intent(Principal.this,MainActivity.class);
+                Intent intent = new Intent(PrincipalArrendatario.this,MainActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
             }
         });
+
     }
 
     @Override
@@ -90,11 +92,11 @@ public class Principal extends FragmentActivity implements OnMapReadyCallback {
                 @Override
                 public void onActivityResult(Boolean result) {
                     if(result == true){
-                        mFusedLocationClient.getLastLocation().addOnSuccessListener(Principal.this,ubicacionObtenida);
+                        mFusedLocationClient.getLastLocation().addOnSuccessListener(PrincipalArrendatario.this,ubicacionObtenida);
                     }else{
                         if(shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_FINE_LOCATION))
                         {
-                            Toast.makeText(Principal.this, "No se ha otorgado el permiso para la ubicacion.", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(PrincipalArrendatario.this, "No se ha otorgado el permiso para la ubicacion.", Toast.LENGTH_SHORT).show();
                         }
                     }
                 }
