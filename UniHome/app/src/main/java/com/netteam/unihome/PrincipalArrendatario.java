@@ -11,13 +11,16 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -30,6 +33,8 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.tabs.TabItem;
+import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -47,12 +52,8 @@ public class PrincipalArrendatario extends FragmentActivity implements OnMapRead
     private FusedLocationProviderClient mFusedLocationClient;
     private LatLng ubicacion;
     private MarkerOptions marcador;
-    private Button logOut;
+    private ImageButton cuentaA,chatsA,publicarA;
     private FirebaseAuth autenticacion;
-    private Arrendatario datosUsuario;
-    //private ImageView fotoArrendatario;
-    private FirebaseStorage storage;
-    private StorageReference storageRef,perfil;
 
     @SuppressLint("MissingPermission")
     @Override
@@ -63,15 +64,13 @@ public class PrincipalArrendatario extends FragmentActivity implements OnMapRead
         ubicacion = new LatLng(0,0);
 
         autenticacion = FirebaseAuth.getInstance();
-        //fotoArrendatario = findViewById(R.id.fotoArrendatario);
-        storage = FirebaseStorage.getInstance();
-        storageRef = storage.getReference();
-        perfil = storage.getReference();
 
         binding = ActivityPrincipalBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        logOut = findViewById(R.id.CerrarSesionA);
+        cuentaA = findViewById(R.id.cuentaA);
+        chatsA = findViewById(R.id.chatsA);
+        publicarA = findViewById(R.id.publicarA);
 
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
 
@@ -83,16 +82,6 @@ public class PrincipalArrendatario extends FragmentActivity implements OnMapRead
                 .findFragmentById(R.id.mapA);
         mapFragment.getMapAsync(this);
 
-        logOut.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                autenticacion.signOut();
-                Intent intent = new Intent(PrincipalArrendatario.this,MainActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent);
-            }
-        });
-        //mostrarFoto();
     }
 
     @Override
@@ -132,9 +121,4 @@ public class PrincipalArrendatario extends FragmentActivity implements OnMapRead
             }
         }
     };
-
-    /*private void mostrarFoto(){
-        fotoArrendatario = findViewById(R.id.fotoArrendatario);
-        Picasso.get().load(autenticacion.getCurrentUser().getPhotoUrl()).into(fotoArrendatario);
-    }*/
 }

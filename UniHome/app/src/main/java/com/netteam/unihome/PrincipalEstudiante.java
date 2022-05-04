@@ -10,8 +10,11 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -25,32 +28,33 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.netteam.unihome.databinding.ActivityPrincipalBinding;
+import com.netteam.unihome.databinding.ActivityPrincipalEstudianteBinding;
 
 public class PrincipalEstudiante extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
-    private ActivityPrincipalBinding binding;
+    private ActivityPrincipalEstudianteBinding binding;
     private FusedLocationProviderClient mFusedLocationClient;
     private LatLng ubicacion;
     private MarkerOptions marcador;
-    private Button logOut;
+    private ImageButton cuentaE, chatsE, publicarE;
     private FirebaseAuth autenticacion;
-    private Arrendatario datosUsuario;
 
     @SuppressLint("MissingPermission")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        binding = ActivityPrincipalEstudianteBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
 
         marcador = new MarkerOptions();
         ubicacion = new LatLng(0,0);
 
+        cuentaE = findViewById(R.id.cuentaE);
+        chatsE = findViewById(R.id.chatsE);
+        publicarE = findViewById(R.id.publicarE);
+
         autenticacion = FirebaseAuth.getInstance();
-
-        binding = ActivityPrincipalBinding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());
-
-        logOut = findViewById(R.id.CerrarSesionE);
 
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
 
@@ -58,20 +62,11 @@ public class PrincipalEstudiante extends FragmentActivity implements OnMapReadyC
 
         mFusedLocationClient.getLastLocation().addOnSuccessListener(this,ubicacionObtenida);
 
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+        SupportMapFragment mapFragment2 = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.mapE);
-        mapFragment.getMapAsync(this);
-
-        logOut.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                autenticacion.signOut();
-                Intent intent = new Intent(PrincipalEstudiante.this,MainActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent);
-            }
-        });
-
+        mapFragment2.getMapAsync(this);
+        Log.i("BD","Bandera de actividad :)");
+        cuentaE.setOnClickListener(verInfo);
     }
 
     @Override
@@ -109,6 +104,15 @@ public class PrincipalEstudiante extends FragmentActivity implements OnMapReadyC
                 ubicacion = new LatLng(location.getLatitude(),location.getLongitude());
                 onMapReady(mMap);
             }
+        }
+    };
+
+    private View.OnClickListener verInfo = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            Intent verinfo = new Intent(PrincipalEstudiante.this,InfoEstudiante.class);
+            Log.i("BD","Bandera de actividad 2 :)");
+            startActivity(verinfo);
         }
     };
 }
