@@ -13,8 +13,13 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.location.Location;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -38,6 +43,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -58,6 +64,9 @@ public class PrincipalEstudiante extends FragmentActivity implements OnMapReadyC
     private boolean settingsOK;
     private LocationRequest mLocationRequest;
     private LocationCallback mLocationCallback;
+    private SensorManager sensorManager,sensorManager2;
+    private Sensor lightSensor,tempSensor;
+    private SensorEventListener lightSensorListener, tempSensorListener;
 
     @SuppressLint("MissingPermission")
     @Override
@@ -85,12 +94,22 @@ public class PrincipalEstudiante extends FragmentActivity implements OnMapReadyC
         mFusedLocationClient.getLastLocation().addOnSuccessListener(this,ubicacionObtenida);
         mLocationRequest = createLocationRequest();
         mLocationCallback = callbackUbicacion;
+        sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
+        sensorManager2 = (SensorManager) getSystemService(SENSOR_SERVICE);
+        lightSensor = sensorManager.getDefaultSensor(Sensor.TYPE_LIGHT);
+        tempSensor = sensorManager2.getDefaultSensor(Sensor.TYPE_AMBIENT_TEMPERATURE);
+        lightSensorListener = lecturaSensor;
+        tempSensorListener = lecturaTemperatura;
         checkLocationSettings();
 
         SupportMapFragment mapFragment2 = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.mapE);
         mapFragment2.getMapAsync(this);
+        sensorManager.registerListener(lightSensorListener,lightSensor,SensorManager.SENSOR_DELAY_NORMAL);
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
         cuentaE.setOnClickListener(verInfo);
+
     }
 
     @Override
@@ -108,12 +127,14 @@ public class PrincipalEstudiante extends FragmentActivity implements OnMapReadyC
     protected void onResume() {
         super.onResume();
         startLocationUpdates();
+        sensorManager.registerListener(lightSensorListener,lightSensor,SensorManager.SENSOR_DELAY_NORMAL);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
         stopLocationUpdates();
+        sensorManager.unregisterListener(lightSensorListener);
     }
 
     ActivityResultLauncher<IntentSenderRequest> getLocationSettings =
@@ -230,6 +251,47 @@ public class PrincipalEstudiante extends FragmentActivity implements OnMapReadyC
                 ubicacion = new LatLng(location.getLatitude(),location.getLongitude());
                 onMapReady(mMap);
             }
+        }
+    };
+
+    private SensorEventListener lecturaSensor = new SensorEventListener() {
+        @Override
+        public void onSensorChanged(SensorEvent sensorEvent) {
+            if(mMap != null)
+            {
+                if(sensorEvent.values[0]<1500)
+                {
+                    mMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(PrincipalEstudiante.this, R.raw.modo_oscuro));
+                    Log.i("DB","Temperatura baja!");
+                }else{
+                    mMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(PrincipalEstudiante.this, R.raw.modo_claro));
+                    Log.i("DB","Temperatura alta!");
+                }
+            }
+        }
+
+        @Override
+        public void onAccuracyChanged(Sensor sensor, int i) {
+
+        }
+    };
+
+    private SensorEventListener lecturaTemperatura = new SensorEventListener() {
+        @Override
+        public void onSensorChanged(SensorEvent sensorEvent) {
+            if(mMap!=null){
+                if(sensorEvent.values[0]<12)
+                {
+                    Toast.makeText(PrincipalEstudiante.this, "La temperatura ha bajado, abríguese mijo!", Toast.LENGTH_SHORT).show();
+                }else{
+                    Toast.makeText(PrincipalEstudiante.this, "La temperatura ha subido, toma agüita!", Toast.LENGTH_SHORT).show();
+                }
+            }
+        }
+
+        @Override
+        public void onAccuracyChanged(Sensor sensor, int i) {
+
         }
     };
 

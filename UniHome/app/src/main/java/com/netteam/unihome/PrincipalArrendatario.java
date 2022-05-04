@@ -16,6 +16,10 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
@@ -43,6 +47,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -71,6 +76,9 @@ public class PrincipalArrendatario extends FragmentActivity implements OnMapRead
     private boolean settingsOK;
     private LocationRequest mLocationRequest;
     private LocationCallback mLocationCallback;
+    private SensorManager sensorManager,sensorManager2;
+    private Sensor lightSensor,tempSensor;
+    private SensorEventListener lightSensorListener, tempSensorListener;
 
     @SuppressLint("MissingPermission")
     @Override
@@ -96,6 +104,12 @@ public class PrincipalArrendatario extends FragmentActivity implements OnMapRead
         mFusedLocationClient.getLastLocation().addOnSuccessListener(this,ubicacionObtenida);
         mLocationRequest = createLocationRequest();
         mLocationCallback = callbackUbicacion;
+        sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
+        sensorManager2 = (SensorManager) getSystemService(SENSOR_SERVICE);
+        lightSensor = sensorManager.getDefaultSensor(Sensor.TYPE_LIGHT);
+        tempSensor = sensorManager2.getDefaultSensor(Sensor.TYPE_AMBIENT_TEMPERATURE);
+        lightSensorListener = lecturaSensor;
+        tempSensorListener = lecturaTemperatura;
         checkLocationSettings();
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.mapA);
@@ -119,12 +133,14 @@ public class PrincipalArrendatario extends FragmentActivity implements OnMapRead
     protected void onResume() {
         super.onResume();
         startLocationUpdates();
+        sensorManager.registerListener(lightSensorListener,lightSensor,SensorManager.SENSOR_DELAY_NORMAL);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
         stopLocationUpdates();
+        sensorManager.unregisterListener(lightSensorListener);
     }
 
     ActivityResultLauncher<IntentSenderRequest> getLocationSettings =
@@ -241,6 +257,45 @@ public class PrincipalArrendatario extends FragmentActivity implements OnMapRead
                 ubicacion = new LatLng(location.getLatitude(),location.getLongitude());
                 onMapReady(mMap);
             }
+        }
+    };
+
+    private SensorEventListener lecturaSensor = new SensorEventListener() {
+        @Override
+        public void onSensorChanged(SensorEvent sensorEvent) {
+            if(mMap != null)
+            {
+                if(sensorEvent.values[0]<1500)
+                {
+                    mMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(PrincipalArrendatario.this, R.raw.modo_oscuro));
+                }else{
+                    mMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(PrincipalArrendatario.this, R.raw.modo_claro));
+                }
+            }
+        }
+
+        @Override
+        public void onAccuracyChanged(Sensor sensor, int i) {
+
+        }
+    };
+
+    private SensorEventListener lecturaTemperatura = new SensorEventListener() {
+        @Override
+        public void onSensorChanged(SensorEvent sensorEvent) {
+            if(mMap!=null){
+                if(sensorEvent.values[0]<12)
+                {
+                    Toast.makeText(PrincipalArrendatario.this, "La temperatura ha bajado, abríguese mijo!", Toast.LENGTH_SHORT).show();
+                }else{
+                    Toast.makeText(PrincipalArrendatario.this, "La temperatura ha subido, toma agüita!", Toast.LENGTH_SHORT).show();
+                }
+            }
+        }
+
+        @Override
+        public void onAccuracyChanged(Sensor sensor, int i) {
+
         }
     };
 
