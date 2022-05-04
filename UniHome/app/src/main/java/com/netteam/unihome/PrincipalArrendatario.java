@@ -289,12 +289,12 @@ public class PrincipalArrendatario extends FragmentActivity implements OnMapRead
         @Override
         public void onSensorChanged(SensorEvent sensorEvent) {
             if(mMap!=null){
-                if(sensorEvent.values[0]!=tempActual){
+                if(Math.abs(tempActual-sensorEvent.values[0])>10){
                     tempActual = sensorEvent.values[0];
-                    if(sensorEvent.values[0]<12)
+                    if(tempActual<12)
                     {
                         Toast.makeText(PrincipalArrendatario.this, "La temperatura es muy baja, abríguese mijo!", Toast.LENGTH_SHORT).show();
-                    }else{
+                    }else if(tempActual>25) {
                         Toast.makeText(PrincipalArrendatario.this, "La temperatura es alta, toma agüita!", Toast.LENGTH_SHORT).show();
                     }
                 }

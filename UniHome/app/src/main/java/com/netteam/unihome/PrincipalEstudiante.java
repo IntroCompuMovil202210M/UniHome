@@ -263,13 +263,13 @@ public class PrincipalEstudiante extends FragmentActivity implements OnMapReadyC
         public void onSensorChanged(SensorEvent sensorEvent) {
             if(mMap != null)
             {
-                if(sensorEvent.values[0]!=tempActual){
+                if(Math.abs(tempActual-sensorEvent.values[0])>10){
                     tempActual = sensorEvent.values[0];
-                    if(sensorEvent.values[0]<12)
+                    if(tempActual<12)
                     {
-                        Toast.makeText(PrincipalEstudiante.this, "La temperatura ha bajado, abríguese mijo!", Toast.LENGTH_SHORT).show();
-                    }else{
-                        Toast.makeText(PrincipalEstudiante.this, "La temperatura ha subido, toma agüita!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(PrincipalEstudiante.this, "La temperatura es muy baja, abríguese mijo!", Toast.LENGTH_SHORT).show();
+                    }else if(tempActual>25) {
+                        Toast.makeText(PrincipalEstudiante.this, "La temperatura es alta, toma agüita!", Toast.LENGTH_SHORT).show();
                     }
                 }
             }
