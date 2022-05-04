@@ -8,6 +8,12 @@ public class Estudiante {
     //Acá va el atributo del recibo de matricula.
     //Acá va la foto.
 
+    public Estudiante(){
+        this.nombre = "";
+        this.apellido = "";
+        this.universidad = "";
+        this.programa = "";
+    }
 
     public Estudiante(String nombre, String apellido, String universidad, String programa) {
         this.nombre = nombre;
