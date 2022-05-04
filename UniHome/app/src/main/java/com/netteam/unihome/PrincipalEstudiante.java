@@ -59,14 +59,15 @@ public class PrincipalEstudiante extends FragmentActivity implements OnMapReadyC
     private FusedLocationProviderClient mFusedLocationClient;
     private LatLng ubicacion;
     private MarkerOptions marcador;
-    private ImageButton cuentaE, chatsE, publicarE;
+    private ImageButton cuentaE, chatsE, rutaE;
     private FirebaseAuth autenticacion;
     private boolean settingsOK;
     private LocationRequest mLocationRequest;
     private LocationCallback mLocationCallback;
-    private SensorManager sensorManager,sensorManager2;
+    private SensorManager sensorManager;
     private Sensor lightSensor,tempSensor;
     private SensorEventListener lightSensorListener, tempSensorListener;
+    private float tempActual;
 
     @SuppressLint("MissingPermission")
     @Override
@@ -81,7 +82,7 @@ public class PrincipalEstudiante extends FragmentActivity implements OnMapReadyC
 
         cuentaE = findViewById(R.id.cuentaE);
         chatsE = findViewById(R.id.chatsE);
-        publicarE = findViewById(R.id.publicarE);
+        rutaE = findViewById(R.id.rutaE);
 
         autenticacion = FirebaseAuth.getInstance();
 
@@ -95,17 +96,18 @@ public class PrincipalEstudiante extends FragmentActivity implements OnMapReadyC
         mLocationRequest = createLocationRequest();
         mLocationCallback = callbackUbicacion;
         sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
-        sensorManager2 = (SensorManager) getSystemService(SENSOR_SERVICE);
         lightSensor = sensorManager.getDefaultSensor(Sensor.TYPE_LIGHT);
-        tempSensor = sensorManager2.getDefaultSensor(Sensor.TYPE_AMBIENT_TEMPERATURE);
+        tempSensor = sensorManager.getDefaultSensor(Sensor.TYPE_AMBIENT_TEMPERATURE);
         lightSensorListener = lecturaSensor;
         tempSensorListener = lecturaTemperatura;
+        tempActual = 0;
         checkLocationSettings();
 
         SupportMapFragment mapFragment2 = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.mapE);
         mapFragment2.getMapAsync(this);
         sensorManager.registerListener(lightSensorListener,lightSensor,SensorManager.SENSOR_DELAY_NORMAL);
+        sensorManager.registerListener(tempSensorListener,tempSensor,sensorManager.SENSOR_DELAY_NORMAL);
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
         cuentaE.setOnClickListener(verInfo);
@@ -128,6 +130,7 @@ public class PrincipalEstudiante extends FragmentActivity implements OnMapReadyC
         super.onResume();
         startLocationUpdates();
         sensorManager.registerListener(lightSensorListener,lightSensor,SensorManager.SENSOR_DELAY_NORMAL);
+        sensorManager.registerListener(tempSensorListener,tempSensor,sensorManager.SENSOR_DELAY_NORMAL);
     }
 
     @Override
@@ -135,6 +138,7 @@ public class PrincipalEstudiante extends FragmentActivity implements OnMapReadyC
         super.onPause();
         stopLocationUpdates();
         sensorManager.unregisterListener(lightSensorListener);
+        sensorManager.unregisterListener(tempSensorListener);
     }
 
     ActivityResultLauncher<IntentSenderRequest> getLocationSettings =
@@ -259,13 +263,14 @@ public class PrincipalEstudiante extends FragmentActivity implements OnMapReadyC
         public void onSensorChanged(SensorEvent sensorEvent) {
             if(mMap != null)
             {
-                if(sensorEvent.values[0]<1500)
-                {
-                    mMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(PrincipalEstudiante.this, R.raw.modo_oscuro));
-                    Log.i("DB","Temperatura baja!");
-                }else{
-                    mMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(PrincipalEstudiante.this, R.raw.modo_claro));
-                    Log.i("DB","Temperatura alta!");
+                if(sensorEvent.values[0]!=tempActual){
+                    tempActual = sensorEvent.values[0];
+                    if(sensorEvent.values[0]<12)
+                    {
+                        Toast.makeText(PrincipalEstudiante.this, "La temperatura ha bajado, abríguese mijo!", Toast.LENGTH_SHORT).show();
+                    }else{
+                        Toast.makeText(PrincipalEstudiante.this, "La temperatura ha subido, toma agüita!", Toast.LENGTH_SHORT).show();
+                    }
                 }
             }
         }
@@ -282,9 +287,9 @@ public class PrincipalEstudiante extends FragmentActivity implements OnMapReadyC
             if(mMap!=null){
                 if(sensorEvent.values[0]<12)
                 {
-                    Toast.makeText(PrincipalEstudiante.this, "La temperatura ha bajado, abríguese mijo!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(PrincipalEstudiante.this, "La temperatura es muy baja, abríguese mijo!", Toast.LENGTH_SHORT).show();
                 }else{
-                    Toast.makeText(PrincipalEstudiante.this, "La temperatura ha subido, toma agüita!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(PrincipalEstudiante.this, "La temperatura es alta, toma agüita!", Toast.LENGTH_SHORT).show();
                 }
             }
         }

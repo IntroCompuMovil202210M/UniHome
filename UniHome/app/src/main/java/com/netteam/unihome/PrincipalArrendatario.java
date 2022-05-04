@@ -76,9 +76,10 @@ public class PrincipalArrendatario extends FragmentActivity implements OnMapRead
     private boolean settingsOK;
     private LocationRequest mLocationRequest;
     private LocationCallback mLocationCallback;
-    private SensorManager sensorManager,sensorManager2;
+    private SensorManager sensorManager;
     private Sensor lightSensor,tempSensor;
     private SensorEventListener lightSensorListener, tempSensorListener;
+    private float tempActual;
 
     @SuppressLint("MissingPermission")
     @Override
@@ -105,15 +106,17 @@ public class PrincipalArrendatario extends FragmentActivity implements OnMapRead
         mLocationRequest = createLocationRequest();
         mLocationCallback = callbackUbicacion;
         sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
-        sensorManager2 = (SensorManager) getSystemService(SENSOR_SERVICE);
         lightSensor = sensorManager.getDefaultSensor(Sensor.TYPE_LIGHT);
-        tempSensor = sensorManager2.getDefaultSensor(Sensor.TYPE_AMBIENT_TEMPERATURE);
+        tempSensor = sensorManager.getDefaultSensor(Sensor.TYPE_AMBIENT_TEMPERATURE);
         lightSensorListener = lecturaSensor;
         tempSensorListener = lecturaTemperatura;
+        tempActual = 0;
         checkLocationSettings();
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.mapA);
         mapFragment.getMapAsync(this);
+        sensorManager.registerListener(lightSensorListener,lightSensor,SensorManager.SENSOR_DELAY_NORMAL);
+        sensorManager.registerListener(tempSensorListener,tempSensor,sensorManager.SENSOR_DELAY_NORMAL);
         cuentaA.setOnClickListener(verInfo);
     }
 
@@ -134,6 +137,7 @@ public class PrincipalArrendatario extends FragmentActivity implements OnMapRead
         super.onResume();
         startLocationUpdates();
         sensorManager.registerListener(lightSensorListener,lightSensor,SensorManager.SENSOR_DELAY_NORMAL);
+        sensorManager.registerListener(tempSensorListener,tempSensor,sensorManager.SENSOR_DELAY_NORMAL);
     }
 
     @Override
@@ -141,6 +145,7 @@ public class PrincipalArrendatario extends FragmentActivity implements OnMapRead
         super.onPause();
         stopLocationUpdates();
         sensorManager.unregisterListener(lightSensorListener);
+        sensorManager.unregisterListener(tempSensorListener);
     }
 
     ActivityResultLauncher<IntentSenderRequest> getLocationSettings =
@@ -284,11 +289,14 @@ public class PrincipalArrendatario extends FragmentActivity implements OnMapRead
         @Override
         public void onSensorChanged(SensorEvent sensorEvent) {
             if(mMap!=null){
-                if(sensorEvent.values[0]<12)
-                {
-                    Toast.makeText(PrincipalArrendatario.this, "La temperatura ha bajado, abríguese mijo!", Toast.LENGTH_SHORT).show();
-                }else{
-                    Toast.makeText(PrincipalArrendatario.this, "La temperatura ha subido, toma agüita!", Toast.LENGTH_SHORT).show();
+                if(sensorEvent.values[0]!=tempActual){
+                    tempActual = sensorEvent.values[0];
+                    if(sensorEvent.values[0]<12)
+                    {
+                        Toast.makeText(PrincipalArrendatario.this, "La temperatura es muy baja, abríguese mijo!", Toast.LENGTH_SHORT).show();
+                    }else{
+                        Toast.makeText(PrincipalArrendatario.this, "La temperatura es alta, toma agüita!", Toast.LENGTH_SHORT).show();
+                    }
                 }
             }
         }

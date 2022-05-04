@@ -42,13 +42,13 @@
             android:src="@drawable/chatspic" />
 
         <ImageButton
-            android:id="@+id/publicarE"
+            android:id="@+id/rutaE"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:scaleType="fitCenter"
             android:background="@color/ColorLogoUnihome"
-            android:src="@drawable/publicarpic" />
+            android:src="@drawable/rutapic" />
 
     </LinearLayout>
 
