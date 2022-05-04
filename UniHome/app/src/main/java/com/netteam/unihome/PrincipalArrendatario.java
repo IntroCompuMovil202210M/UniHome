@@ -84,6 +84,7 @@ public class PrincipalArrendatario extends FragmentActivity implements OnMapRead
 
     }
 
+
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;

@@ -1,5 +1,7 @@
 package com.netteam.unihome;
 
+import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -17,6 +19,7 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.FileProvider;
 
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -32,12 +35,13 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
 public class RegistroArrendatario extends AppCompatActivity {
 
-    Button botonRegistrar;
+    Button botonRegistrar,BotonSelectImgA,BotonTomarFotoA;
     EditText nombre,apellido,emailRegistro,contraseña,confirmarc;
     ImageView fotoA;
     FirebaseAuth autenticacion;
@@ -65,8 +69,14 @@ public class RegistroArrendatario extends AppCompatActivity {
         contraseña = findViewById(R.id.contrasenaRegistroA);
         confirmarc = findViewById(R.id.cofirmacionContrasenaA);
         botonRegistrar = findViewById(R.id.registrarseA);
+        BotonSelectImgA = findViewById(R.id.BotonSelectImgA);
+        BotonTomarFotoA = findViewById(R.id.BotonTomarFotoA);
+        File archivo = new File(getFilesDir(),"fotodesdeCamara");
+        uriFoto = FileProvider.getUriForFile(this,getApplicationContext().getPackageName()+".fileprovider",archivo);
+
         botonRegistrar.setOnClickListener(registro);
-        fotoA.setOnClickListener(establecerfotoPerfil);
+        BotonSelectImgA.setOnClickListener(establecerfotoPerfil);
+        BotonTomarFotoA.setOnClickListener(tomarfotoPerfil);
     }
 
     @Override
@@ -175,6 +185,51 @@ public class RegistroArrendatario extends AppCompatActivity {
             }
     );
 
+    ActivityResultLauncher<Uri> tomarFoto = registerForActivityResult(
+            new ActivityResultContracts.TakePicture(),
+            new ActivityResultCallback<Boolean>() {
+                @Override
+                public void onActivityResult(Boolean result) {
+                    fotoA.setImageURI(uriFoto);
+                    fotoSeleccionada=true;
+                }
+            }
+    );
+
+    ActivityResultLauncher<String> solicitarpermisoCamara = registerForActivityResult(
+            new ActivityResultContracts.RequestPermission(),
+            new ActivityResultCallback<Boolean>() {
+                @SuppressLint("MissingPermission")
+                @Override
+                public void onActivityResult(Boolean result) {
+                    if(result){
+                        tomarFoto.launch(uriFoto);
+                    }else{
+                        if(shouldShowRequestPermissionRationale(Manifest.permission.CAMERA))
+                        {
+                            Toast.makeText(RegistroArrendatario.this, "Debe otorgar el acceso a la cámara.", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                }
+            });
+
+    ActivityResultLauncher<String> solicitarpermisoAlmacenamiento = registerForActivityResult(
+            new ActivityResultContracts.RequestPermission(),
+            new ActivityResultCallback<Boolean>() {
+                @SuppressLint("MissingPermission")
+                @Override
+                public void onActivityResult(Boolean result) {
+                    if(result){
+                        obtenerImagen.launch("image/*");
+                    }else{
+                        if(shouldShowRequestPermissionRationale(Manifest.permission.READ_EXTERNAL_STORAGE))
+                        {
+                            Toast.makeText(RegistroArrendatario.this, "Debe otorgar el acceso al almacenamiento.", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                }
+            });
+
     public void subirFoto(){
         perfil = storageRef.child("fotos/"+autenticacion.getCurrentUser().getEmail());
         UploadTask uploadTask = perfil.putFile(uriFoto);
@@ -205,7 +260,14 @@ public class RegistroArrendatario extends AppCompatActivity {
     View.OnClickListener establecerfotoPerfil = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-            obtenerImagen.launch("image/*");
+            solicitarpermisoAlmacenamiento.launch(Manifest.permission.READ_EXTERNAL_STORAGE);
+        }
+    };
+
+    View.OnClickListener tomarfotoPerfil = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            solicitarpermisoCamara.launch(Manifest.permission.CAMERA);
         }
     };
 

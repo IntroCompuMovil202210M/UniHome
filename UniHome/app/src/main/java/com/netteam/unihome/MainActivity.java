@@ -147,8 +147,9 @@ public class MainActivity extends AppCompatActivity {
                     DocumentSnapshot document = task.getResult();
                     if (document.exists()) {
                         arrendatario = document.toObject(Arrendatario.class);
-                        Toast.makeText(MainActivity.this, "Bienvenido/a Arrendatario "+arrendatario.getNombre(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MainActivity.this, "Bienvenido/a "+arrendatario.getNombre(), Toast.LENGTH_SHORT).show();
                         Intent iniciarArrendatario = new Intent(MainActivity.this, PrincipalArrendatario.class);
+                        iniciarArrendatario.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         startActivity(iniciarArrendatario);
                     } else {
                         buscarEstudiante(id);
@@ -171,6 +172,7 @@ public class MainActivity extends AppCompatActivity {
                         estudiante = document.toObject(Estudiante.class);
                         Toast.makeText(MainActivity.this, "Bienvenido/a "+estudiante.getNombre(), Toast.LENGTH_SHORT).show();
                         Intent iniciarEstudiante = new Intent(MainActivity.this, PrincipalEstudiante.class);
+                        iniciarEstudiante.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         startActivity(iniciarEstudiante);
                     } else {
                         //Toast.makeText(MainActivity.this, "No existe el estudiante", Toast.LENGTH_SHORT).show();
