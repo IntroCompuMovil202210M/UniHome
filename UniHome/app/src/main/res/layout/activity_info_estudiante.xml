@@ -39,34 +39,37 @@
 
     <TextView
         android:id="@+id/nombreApellidoE"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="51dp"
         android:autoSizeMaxTextSize="100sp"
         android:autoSizeTextType="uniform"
         android:text="Nombre Apellido"
         android:layout_gravity="center"
+        android:gravity="center"
         android:textColor="@color/ColorLogoUnihome"
         android:textStyle="bold" />
 
     <TextView
         android:id="@+id/universidadE"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="40dp"
         android:autoSizeMaxTextSize="100sp"
         android:autoSizeTextType="uniform"
         android:text="Universidad"
         android:layout_gravity="center"
+        android:gravity="center"
         android:textColor="@color/ColorLogoUnihome"
         android:textStyle="bold" />
 
     <TextView
         android:id="@+id/programaE"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="41dp"
         android:autoSizeMaxTextSize="100sp"
         android:autoSizeTextType="uniform"
         android:text="Programa Académico"
         android:layout_gravity="center"
+        android:gravity="center"
         android:textColor="@color/ColorLogoUnihome"
         android:textStyle="bold" />
 
@@ -77,6 +80,8 @@
         android:text="Cerrar Sesión"
         android:layout_gravity="center"
         android:layout_marginTop="150dp"
-        android:background="@drawable/estilo_edittext"/>
+        android:background="@drawable/estilo_edittext"
+        android:backgroundTint="@color/Blue"
+        android:textColor="@color/white"/>
 
 </LinearLayout>
