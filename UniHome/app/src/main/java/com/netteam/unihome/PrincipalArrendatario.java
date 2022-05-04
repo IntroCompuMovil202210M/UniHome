@@ -118,6 +118,7 @@ public class PrincipalArrendatario extends FragmentActivity implements OnMapRead
         sensorManager.registerListener(lightSensorListener,lightSensor,SensorManager.SENSOR_DELAY_NORMAL);
         sensorManager.registerListener(tempSensorListener,tempSensor,sensorManager.SENSOR_DELAY_NORMAL);
         cuentaA.setOnClickListener(verInfo);
+        publicarA.setOnClickListener(publicar);
     }
 
 
@@ -312,6 +313,14 @@ public class PrincipalArrendatario extends FragmentActivity implements OnMapRead
         public void onClick(View view) {
             Intent verinfo = new Intent(PrincipalArrendatario.this,InfoArrendatario.class);
             startActivity(verinfo);
+        }
+    };
+
+    private View.OnClickListener publicar = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            Intent publicar = new Intent(PrincipalArrendatario.this,Publicar.class);
+            startActivity(publicar);
         }
     };
 }
