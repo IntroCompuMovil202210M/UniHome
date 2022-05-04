@@ -14,22 +14,27 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
 
 public class InfoEstudiante extends AppCompatActivity {
 
-    private Button sesionE;
+    private Button sesionE,eliminarE,actualizarE;
     private TextView nombreApellidoE, universidadE, programaE;
     private ImageView fotoperfilE;
     private FirebaseUser usuario;
     private FirebaseAuth autenticacion;
     private FirebaseFirestore db;
+    FirebaseStorage storage;
+    StorageReference storageRef,foto;
     private Estudiante estudiante;
 
     @Override
@@ -41,9 +46,13 @@ public class InfoEstudiante extends AppCompatActivity {
         universidadE = findViewById(R.id.universidadE);
         programaE = findViewById(R.id.programaE);
         fotoperfilE = findViewById(R.id.fotoperfilE);
+        eliminarE = findViewById(R.id.eliminarE);
         autenticacion = FirebaseAuth.getInstance();
+        storage = FirebaseStorage.getInstance();
+        storageRef = storage.getReference();
         db = FirebaseFirestore.getInstance();
         sesionE.setOnClickListener(cerrarsesion);
+        eliminarE.setOnClickListener(eliminarPerfil);
         cargarDatos();
     }
 
@@ -87,6 +96,33 @@ public class InfoEstudiante extends AppCompatActivity {
             Intent volveraInicio = new Intent(InfoEstudiante.this,MainActivity.class);
             volveraInicio.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(volveraInicio);
+        }
+    };
+
+    private View.OnClickListener eliminarPerfil = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            FirebaseUser usuario = autenticacion.getCurrentUser();
+            foto = storageRef.child("fotos/"+usuario.getEmail());
+            foto.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                @Override
+                public void onSuccess(Void unused) {
+                    db.collection("estudiantes").document(usuario.getUid()).delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void unused) {
+                            usuario.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void unused) {
+                                    Toast.makeText(InfoEstudiante.this, "Cuenta eliminada correctamente.", Toast.LENGTH_SHORT).show();
+                                    Intent volveraInicio = new Intent(InfoEstudiante.this,MainActivity.class);
+                                    volveraInicio.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                    startActivity(volveraInicio);
+                                }
+                            });
+                        }
+                    });
+                }
+            });
         }
     };
 }

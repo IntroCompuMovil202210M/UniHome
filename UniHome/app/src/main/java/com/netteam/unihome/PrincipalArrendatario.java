@@ -81,7 +81,7 @@ public class PrincipalArrendatario extends FragmentActivity implements OnMapRead
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.mapA);
         mapFragment.getMapAsync(this);
-
+        cuentaA.setOnClickListener(verInfo);
     }
 
 
@@ -120,6 +120,14 @@ public class PrincipalArrendatario extends FragmentActivity implements OnMapRead
                 ubicacion = new LatLng(location.getLatitude(),location.getLongitude());
                 onMapReady(mMap);
             }
+        }
+    };
+
+    private View.OnClickListener verInfo = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            Intent verinfo = new Intent(PrincipalArrendatario.this,InfoArrendatario.class);
+            startActivity(verinfo);
         }
     };
 }

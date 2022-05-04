@@ -65,7 +65,6 @@ public class PrincipalEstudiante extends FragmentActivity implements OnMapReadyC
         SupportMapFragment mapFragment2 = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.mapE);
         mapFragment2.getMapAsync(this);
-        Log.i("BD","Bandera de actividad :)");
         cuentaE.setOnClickListener(verInfo);
     }
 
@@ -111,7 +110,6 @@ public class PrincipalEstudiante extends FragmentActivity implements OnMapReadyC
         @Override
         public void onClick(View view) {
             Intent verinfo = new Intent(PrincipalEstudiante.this,InfoEstudiante.class);
-            Log.i("BD","Bandera de actividad 2 :)");
             startActivity(verinfo);
         }
     };
