@@ -136,6 +136,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginTop="30dp"
             android:orientation="horizontal">
 
             <Button
@@ -143,11 +144,22 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:layout_margin="20dp"
+                android:layout_margin="5dp"
                 android:background="@drawable/estilo_edittext"
                 android:backgroundTint="@color/Blue"
                 android:textColor="@color/white"
                 android:text="Agregar Publicación" />
+
+            <Button
+                android:id="@+id/botonCancelar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_margin="5dp"
+                android:background="@drawable/estilo_edittext"
+                android:backgroundTint="@color/Red"
+                android:textColor="@color/white"
+                android:text="Cancelar" />
         </LinearLayout>
 
 
