@@ -59,7 +59,7 @@ public class PrincipalEstudiante extends FragmentActivity implements OnMapReadyC
     private FusedLocationProviderClient mFusedLocationClient;
     private LatLng ubicacion;
     private MarkerOptions marcador;
-    private ImageButton cuentaE, chatsE, publicarE;
+    private ImageButton cuentaE, chatsE, rutaE;
     private FirebaseAuth autenticacion;
     private boolean settingsOK;
     private LocationRequest mLocationRequest;
@@ -82,7 +82,7 @@ public class PrincipalEstudiante extends FragmentActivity implements OnMapReadyC
 
         cuentaE = findViewById(R.id.cuentaE);
         chatsE = findViewById(R.id.chatsE);
-        publicarE = findViewById(R.id.publicarE);
+        rutaE = findViewById(R.id.rutaE);
 
         autenticacion = FirebaseAuth.getInstance();
 
