@@ -4,8 +4,7 @@ import android.net.Uri;
 
 public class Residencia {
 
-    private String nombre, descripcion, direccion, arrendatario;
-    private Uri foto;
+    private String nombre, descripcion, direccion, arrendatario,foto;
 
 
     public Residencia(){
@@ -16,7 +15,7 @@ public class Residencia {
         this.foto = null;
     }
 
-    public Residencia(String nombre, String descripcion, String direccion, String arrendatario, Uri foto) {
+    public Residencia(String nombre, String descripcion, String direccion, String arrendatario, String foto) {
         this.nombre = nombre;
         this.descripcion = descripcion;
         this.direccion = direccion;
@@ -56,11 +55,11 @@ public class Residencia {
         this.arrendatario = arrendatario;
     }
 
-    public Uri getFoto() {
+    public String getFoto() {
         return foto;
     }
 
-    public void setFoto(Uri foto) {
+    public void setFoto(String foto) {
         this.foto = foto;
     }
 }

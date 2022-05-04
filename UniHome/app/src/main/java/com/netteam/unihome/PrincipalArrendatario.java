@@ -294,9 +294,9 @@ public class PrincipalArrendatario extends FragmentActivity implements OnMapRead
                     tempActual = sensorEvent.values[0];
                     if(tempActual<12)
                     {
-                        Toast.makeText(PrincipalArrendatario.this, "La temperatura es muy baja, abríguese mijo!", Toast.LENGTH_SHORT).show();
+                        Log.i("SENSOR","La temperatura es muy baja, abríguese mijo!");
                     }else if(tempActual>25) {
-                        Toast.makeText(PrincipalArrendatario.this, "La temperatura es alta, toma agüita!", Toast.LENGTH_SHORT).show();
+                        Log.i("SENSOR","La temperatura es alta, toma agüita!");
                     }
                 }
             }

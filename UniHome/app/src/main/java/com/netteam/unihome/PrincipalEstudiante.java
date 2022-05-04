@@ -17,6 +17,8 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.StrictMode;
@@ -44,23 +46,41 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MapStyleOptions;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.Polyline;
+import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.netteam.unihome.databinding.ActivityPrincipalBinding;
 import com.netteam.unihome.databinding.ActivityPrincipalEstudianteBinding;
+
+import org.osmdroid.bonuspack.routing.OSRMRoadManager;
+import org.osmdroid.bonuspack.routing.Road;
+import org.osmdroid.bonuspack.routing.RoadManager;
+import org.osmdroid.util.GeoPoint;
+
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.util.ArrayList;
+import java.util.List;
 
 public class PrincipalEstudiante extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
     private ActivityPrincipalEstudianteBinding binding;
     private FusedLocationProviderClient mFusedLocationClient;
-    private LatLng ubicacion;
+    private LatLng ubicacion, direccionMarcador;
     private MarkerOptions marcador;
     private ImageButton cuentaE, chatsE, rutaE;
     private FirebaseAuth autenticacion;
+    private FirebaseFirestore db;
     private boolean settingsOK;
     private LocationRequest mLocationRequest;
     private LocationCallback mLocationCallback;
@@ -68,6 +88,11 @@ public class PrincipalEstudiante extends FragmentActivity implements OnMapReadyC
     private Sensor lightSensor,tempSensor;
     private SensorEventListener lightSensorListener, tempSensorListener;
     private float tempActual;
+    Residencia residencia;
+    private Geocoder geocoder;
+    private Address resultadoBusqueda;
+    private RoadManager roadManager;
+    Polyline roadOverlay;
 
     @SuppressLint("MissingPermission")
     @Override
@@ -79,12 +104,16 @@ public class PrincipalEstudiante extends FragmentActivity implements OnMapReadyC
         marcador = new MarkerOptions();
         ubicacion = new LatLng(0,0);
         settingsOK = false;
+        residencia = null;
+        geocoder = new Geocoder(this);
+        roadManager = new OSRMRoadManager(this, "ANDROID");
 
         cuentaE = findViewById(R.id.cuentaE);
         chatsE = findViewById(R.id.chatsE);
         rutaE = findViewById(R.id.rutaE);
 
         autenticacion = FirebaseAuth.getInstance();
+        db = FirebaseFirestore.getInstance();
 
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
 
@@ -111,7 +140,8 @@ public class PrincipalEstudiante extends FragmentActivity implements OnMapReadyC
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
         cuentaE.setOnClickListener(verInfo);
-
+        rutaE.setOnClickListener(iniciarRuta);
+        rutaE.setActivated(false);
     }
 
     @Override
@@ -123,6 +153,58 @@ public class PrincipalEstudiante extends FragmentActivity implements OnMapReadyC
         mMap.addMarker(marcador);
         mMap.moveCamera(CameraUpdateFactory.newLatLng(ubicacion));
         mMap.moveCamera(CameraUpdateFactory.zoomTo(15));
+        mMap.setOnMarkerClickListener(clickMarcador);
+        direccionMarcador = ubicacion;
+        rutaE.setActivated(false);
+        leerResidencias();
+    }
+
+    private GoogleMap.OnMarkerClickListener clickMarcador = new GoogleMap.OnMarkerClickListener() {
+        @Override
+        public boolean onMarkerClick(@NonNull Marker marker) {
+            rutaE.setActivated(true);
+            direccionMarcador = marker.getPosition();
+            return false;
+        }
+    };
+
+    private View.OnClickListener iniciarRuta = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            if(direccionMarcador.latitude!=ubicacion.latitude && direccionMarcador.longitude!=ubicacion.longitude)
+            {
+                drawRoute(new GeoPoint(ubicacion.latitude,ubicacion.longitude),new GeoPoint(direccionMarcador.latitude,direccionMarcador.longitude));
+                direccionMarcador = ubicacion;
+            }
+        }
+    };
+
+    private void drawRoute(GeoPoint start, GeoPoint finish){
+        ArrayList<GeoPoint> routePoints = new ArrayList<>();
+        routePoints.add(start);
+        routePoints.add(finish);
+        Road road = roadManager.getRoad(routePoints);
+        List<GeoPoint> camino = RoadManager.buildRoadOverlay(road).getActualPoints();
+        dibujarRuta(camino);
+        BigDecimal distancia = new BigDecimal(road.mLength);
+        distancia = distancia.setScale(2, RoundingMode.HALF_UP);
+        Toast.makeText(this, "Distancia: "+distancia+" kms.", Toast.LENGTH_SHORT).show();
+    }
+
+    private void dibujarRuta(List<GeoPoint> camino){
+        com.google.android.gms.maps.model.Polyline ruta;
+        PolylineOptions puntosruta = new PolylineOptions();
+        ArrayList<LatLng> puntos = new ArrayList<LatLng>();
+        for(int i=0;i<camino.size();i++)
+        {
+            puntos.add(new LatLng(camino.get(i).getLatitude(),camino.get(i).getLongitude()));
+        }
+        for(int j=0;j<puntos.size();j++)
+        {
+            puntosruta.add(puntos.get(j));
+        }
+        ruta = mMap.addPolyline(puntosruta);
+        ruta.setColor(0xffff0000);
     }
 
     @Override
@@ -285,11 +367,14 @@ public class PrincipalEstudiante extends FragmentActivity implements OnMapReadyC
         @Override
         public void onSensorChanged(SensorEvent sensorEvent) {
             if(mMap!=null){
-                if(sensorEvent.values[0]<12)
-                {
-                    Toast.makeText(PrincipalEstudiante.this, "La temperatura es muy baja, abríguese mijo!", Toast.LENGTH_SHORT).show();
-                }else{
-                    Toast.makeText(PrincipalEstudiante.this, "La temperatura es alta, toma agüita!", Toast.LENGTH_SHORT).show();
+                if(Math.abs(tempActual-sensorEvent.values[0])>10){
+                    tempActual = sensorEvent.values[0];
+                    if(tempActual<12)
+                    {
+                        Log.i("SENSOR","La temperatura es muy baja, abríguese mijo!");
+                    }else if(tempActual>25) {
+                        Log.i("SENSOR","La temperatura es alta, toma agüita!");
+                    }
                 }
             }
         }
@@ -307,4 +392,41 @@ public class PrincipalEstudiante extends FragmentActivity implements OnMapReadyC
             startActivity(verinfo);
         }
     };
+
+    private void leerResidencias(){
+        db.collection("residencias")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                residencia = document.toObject(Residencia.class);
+                                MarkerOptions marker = new MarkerOptions();
+                                LatLng ubicacion = buscarDireccion(residencia.getDireccion());
+                                marker.position(ubicacion).title(residencia.getNombre());
+                                mMap.addMarker(marker);
+                            }
+                        } else {
+                            Log.i("DB", "Excepción: "+ task.getException());
+                        }
+                    }
+                });
+    }
+
+    private LatLng buscarDireccion(String direccion){
+        LatLng ubicacionEncontrada = new LatLng(0,0);
+        try {
+            List<Address> direcciones = geocoder.getFromLocationName(direccion,1);
+            if(direcciones != null && !direcciones.isEmpty())
+            {
+                resultadoBusqueda = direcciones.get(0);
+                ubicacionEncontrada = new LatLng(resultadoBusqueda.getLatitude(),resultadoBusqueda.getLongitude());
+                return ubicacionEncontrada;
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return ubicacionEncontrada;
+    }
 }
