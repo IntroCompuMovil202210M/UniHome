@@ -52,13 +52,37 @@
 
     <Button
         android:id="@+id/sesionA"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Cerrar Sesión"
+        android:layout_marginHorizontal="30dp"
         android:layout_gravity="center"
         android:layout_marginTop="150dp"
         android:background="@drawable/estilo_edittext"
         android:backgroundTint="@color/Blue"
+        android:textColor="@color/white"/>
+
+    <Button
+        android:id="@+id/actualizarA"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Editar Perfil"
+        android:layout_marginHorizontal="30dp"
+        android:layout_marginVertical="10dp"
+        android:layout_gravity="center"
+        android:background="@drawable/estilo_edittext"
+        android:backgroundTint="@color/Blue"
+        android:textColor="@color/white"/>
+
+    <Button
+        android:id="@+id/eliminarA"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="30dp"
+        android:layout_gravity="center"
+        android:text="Borrar Cuenta"
+        android:background="@drawable/estilo_edittext"
+        android:backgroundTint="@color/Red"
         android:textColor="@color/white"/>
 
 </LinearLayout>
