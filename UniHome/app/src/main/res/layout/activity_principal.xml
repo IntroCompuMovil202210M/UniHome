@@ -7,17 +7,49 @@
     android:orientation="vertical"
     tools:context=".PrincipalArrendatario">
 
-    <Button
-        android:id="@+id/CerrarSesionA"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Cerrar Sesion"
-        android:background="@drawable/estilo_edittext"/>
 
     <fragment
         android:id="@+id/mapA"
         android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        android:layout_weight="9"/>
+
+    <LinearLayout
+        android:id="@+id/barraA"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:layout_weight="1"
+        android:background="@color/ColorLogoUnihome"
+        android:orientation="horizontal">
+
+
+        <ImageButton
+            android:id="@+id/cuentaA"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:scaleType="fitCenter"
+            android:background="@color/ColorLogoUnihome"
+            android:src="@drawable/cuentapic" />
+
+        <ImageButton
+            android:id="@+id/chatsA"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:scaleType="fitCenter"
+            android:background="@color/ColorLogoUnihome"
+            android:src="@drawable/chatspic" />
+
+        <ImageButton
+            android:id="@+id/publicarA"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:scaleType="fitCenter"
+            android:background="@color/ColorLogoUnihome"
+            android:src="@drawable/publicarpic" />
+    </LinearLayout>
 
 </LinearLayout>

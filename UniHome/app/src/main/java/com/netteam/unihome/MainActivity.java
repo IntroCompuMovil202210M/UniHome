@@ -131,8 +131,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void updateUI(FirebaseUser usuarioActual){
         if(usuarioActual != null){
-            Intent actividadInicio = new Intent(this, PrincipalArrendatario.class);
-            startActivity(actividadInicio);
+            buscarArrendatario(usuarioActual.getUid());
         }else{
             correo.setText("");
             contrasena.setText("");
@@ -150,6 +149,7 @@ public class MainActivity extends AppCompatActivity {
                         arrendatario = document.toObject(Arrendatario.class);
                         Toast.makeText(MainActivity.this, "Bienvenido/a "+arrendatario.getNombre(), Toast.LENGTH_SHORT).show();
                         Intent iniciarArrendatario = new Intent(MainActivity.this, PrincipalArrendatario.class);
+                        iniciarArrendatario.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         startActivity(iniciarArrendatario);
                     } else {
                         buscarEstudiante(id);
@@ -171,7 +171,8 @@ public class MainActivity extends AppCompatActivity {
                     if (document.exists()) {
                         estudiante = document.toObject(Estudiante.class);
                         Toast.makeText(MainActivity.this, "Bienvenido/a "+estudiante.getNombre(), Toast.LENGTH_SHORT).show();
-                        Intent iniciarEstudiante = new Intent(MainActivity.this, PrincipalArrendatario.class);
+                        Intent iniciarEstudiante = new Intent(MainActivity.this, PrincipalEstudiante.class);
+                        iniciarEstudiante.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         startActivity(iniciarEstudiante);
                     } else {
                         //Toast.makeText(MainActivity.this, "No existe el estudiante", Toast.LENGTH_SHORT).show();
