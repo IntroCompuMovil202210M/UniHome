@@ -137,7 +137,7 @@ public class PrincipalArrendatario extends FragmentActivity implements OnMapRead
     protected void onResume() {
         super.onResume();
         startLocationUpdates();
-        sensorManager.registerListener(lightSensorListener,lightSensor,SensorManager.SENSOR_DELAY_NORMAL);
+        sensorManager.registerListener(lightSensorListener,lightSensor,sensorManager.SENSOR_DELAY_NORMAL);
         sensorManager.registerListener(tempSensorListener,tempSensor,sensorManager.SENSOR_DELAY_NORMAL);
     }
 

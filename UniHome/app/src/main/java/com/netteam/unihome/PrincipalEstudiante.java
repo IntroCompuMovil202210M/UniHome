@@ -211,7 +211,7 @@ public class PrincipalEstudiante extends FragmentActivity implements OnMapReadyC
     protected void onResume() {
         super.onResume();
         startLocationUpdates();
-        sensorManager.registerListener(lightSensorListener,lightSensor,SensorManager.SENSOR_DELAY_NORMAL);
+        sensorManager.registerListener(lightSensorListener,lightSensor,sensorManager.SENSOR_DELAY_NORMAL);
         sensorManager.registerListener(tempSensorListener,tempSensor,sensorManager.SENSOR_DELAY_NORMAL);
     }
 
@@ -345,14 +345,11 @@ public class PrincipalEstudiante extends FragmentActivity implements OnMapReadyC
         public void onSensorChanged(SensorEvent sensorEvent) {
             if(mMap != null)
             {
-                if(Math.abs(tempActual-sensorEvent.values[0])>10){
-                    tempActual = sensorEvent.values[0];
-                    if(tempActual<12)
-                    {
-                        Toast.makeText(PrincipalEstudiante.this, "La temperatura es muy baja, abríguese mijo!", Toast.LENGTH_SHORT).show();
-                    }else if(tempActual>25) {
-                        Toast.makeText(PrincipalEstudiante.this, "La temperatura es alta, toma agüita!", Toast.LENGTH_SHORT).show();
-                    }
+                if(sensorEvent.values[0]<1500)
+                {
+                    mMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(PrincipalEstudiante.this, R.raw.modo_oscuro));
+                }else{
+                    mMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(PrincipalEstudiante.this, R.raw.modo_claro));
                 }
             }
         }
