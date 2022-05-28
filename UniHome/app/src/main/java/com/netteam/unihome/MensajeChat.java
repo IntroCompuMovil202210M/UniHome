@@ -6,10 +6,9 @@ public class MensajeChat {
     private String usuario;
     private long tiempoDeMensaje;
 
-    public MensajeChat(String chatMensaje,String usuario, long tiempoDeMensaje){
+    public MensajeChat(String chatMensaje,String usuario){
         this.chatMensaje = chatMensaje;
         this.usuario = usuario;
-        this.tiempoDeMensaje = tiempoDeMensaje;
     }
 
     public String getChatMensaje() {

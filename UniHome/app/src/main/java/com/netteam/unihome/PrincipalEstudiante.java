@@ -140,6 +140,7 @@ public class PrincipalEstudiante extends FragmentActivity implements OnMapReadyC
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
         cuentaE.setOnClickListener(verInfo);
+        chatsE.setOnClickListener(abrirChat);
         rutaE.setOnClickListener(iniciarRuta);
         rutaE.setActivated(false);
     }
@@ -176,6 +177,14 @@ public class PrincipalEstudiante extends FragmentActivity implements OnMapReadyC
                 drawRoute(new GeoPoint(ubicacion.latitude,ubicacion.longitude),new GeoPoint(direccionMarcador.latitude,direccionMarcador.longitude));
                 direccionMarcador = ubicacion;
             }
+        }
+    };
+
+    private View.OnClickListener abrirChat = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            Intent actividadChat = new Intent(PrincipalEstudiante.this,ListaChat.class);
+            startActivity(actividadChat);
         }
     };
 
