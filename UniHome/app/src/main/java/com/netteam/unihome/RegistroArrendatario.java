@@ -74,6 +74,7 @@ public class RegistroArrendatario extends AppCompatActivity {
         BotonTomarFotoA = findViewById(R.id.BotonTomarFotoA);
         File archivo = new File(getFilesDir(),"fotodesdeCamara");
         uriFoto = FileProvider.getUriForFile(this,getApplicationContext().getPackageName()+".fileprovider",archivo);
+        uriAux = uriFoto;
 
         botonRegistrar.setOnClickListener(registro);
         BotonSelectImgA.setOnClickListener(establecerfotoPerfil);
@@ -142,7 +143,6 @@ public class RegistroArrendatario extends AppCompatActivity {
                     FirebaseUser usuario = autenticacion.getCurrentUser();
                     usuario.updateProfile(new UserProfileChangeRequest.Builder().setDisplayName(nombre.getText().toString()).build());
                     subirFoto();
-                    agregarArrendatario(usuario.getUid());
                 }else{
                     Log.i("BD","El usuario no se creo.");
                 }
@@ -253,6 +253,7 @@ public class RegistroArrendatario extends AppCompatActivity {
                             Uri downloadUri = task.getResult();
                             uriAux = downloadUri;
                             autenticacion.getCurrentUser().updateProfile(new UserProfileChangeRequest.Builder().setPhotoUri(downloadUri).build());
+                            agregarArrendatario(autenticacion.getCurrentUser().getUid());
                         }
                     }
                 });
