@@ -5,6 +5,7 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.FileProvider;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
@@ -31,6 +32,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -66,6 +68,9 @@ public class Publicar extends AppCompatActivity {
         BotonSelectImgP.setOnClickListener(establecerfotoPerfil);
         BotonTomarFotoP.setOnClickListener(tomarfotoPerfil);
         agregarPublicacion.setOnClickListener(publicar);
+
+        File archivo = new File(getFilesDir(),"fotoCamara");
+        uriFoto = FileProvider.getUriForFile(this,getApplicationContext().getPackageName()+".fileprovider",archivo);
         //botonCancelar.setOnClickListener(cancelar);
     }
 

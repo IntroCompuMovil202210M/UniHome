@@ -49,6 +49,7 @@ public class RegistroArrendatario extends AppCompatActivity {
     FirebaseStorage storage;
     StorageReference storageRef,perfil;
     Uri uriFoto;
+    Uri uriAux;
     boolean fotoSeleccionada;
 
     @Override
@@ -154,6 +155,7 @@ public class RegistroArrendatario extends AppCompatActivity {
         Map<String, Object> arrendatario = new HashMap<>();
         arrendatario.put("nombre", nombre.getText().toString());
         arrendatario.put("apellido", apellido.getText().toString());
+        arrendatario.put("foto", uriAux.toString());
 
         db.collection("arrendatarios").document(id)
                 .set(arrendatario)
@@ -249,6 +251,7 @@ public class RegistroArrendatario extends AppCompatActivity {
                     public void onComplete(@NonNull Task<Uri> task) {
                         if(task.isSuccessful()){
                             Uri downloadUri = task.getResult();
+                            uriAux = downloadUri;
                             autenticacion.getCurrentUser().updateProfile(new UserProfileChangeRequest.Builder().setPhotoUri(downloadUri).build());
                         }
                     }
