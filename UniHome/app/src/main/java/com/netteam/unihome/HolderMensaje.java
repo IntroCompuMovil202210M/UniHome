@@ -46,11 +46,11 @@ public class HolderMensaje extends RecyclerView.ViewHolder {
         this.hora = hora;
     }
 
-    public CircleImageView getFotoMensajePerfil() {
-        return fotoMensajePerfil;
-    }
-
     public void setFotoMensajePerfil(ImageView fotoMensajePerfil) {
         this.fotoMensajePerfil = fotoMensajePerfil;
+    }
+
+    public ImageView getFotoMensajePerfil() {
+        return fotoMensajePerfil;
     }
 }
