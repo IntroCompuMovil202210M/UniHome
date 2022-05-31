@@ -166,7 +166,7 @@ public class RegistroEstudiante extends AppCompatActivity {
                     @Override
                     public void onSuccess(Void aVoid) {
                         Toast.makeText(RegistroEstudiante.this, "Se creó el usuario correctamente.", Toast.LENGTH_SHORT).show();
-                        startActivity(new Intent(RegistroEstudiante.this,MainActivity.class));
+                        startActivity(new Intent(RegistroEstudiante.this,MainActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {

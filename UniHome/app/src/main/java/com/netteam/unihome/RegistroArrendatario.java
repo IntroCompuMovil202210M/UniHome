@@ -81,14 +81,6 @@ public class RegistroArrendatario extends AppCompatActivity {
         BotonTomarFotoA.setOnClickListener(tomarfotoPerfil);
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        FirebaseUser usuario = autenticacion.getCurrentUser();
-        if(usuario != null){
-            //reload();
-        }
-    }
 
     private View.OnClickListener registro = new View.OnClickListener() {
         @Override
@@ -163,7 +155,7 @@ public class RegistroArrendatario extends AppCompatActivity {
                     @Override
                     public void onSuccess(Void aVoid) {
                         Toast.makeText(RegistroArrendatario.this, "Se creó el usuario correctamente.", Toast.LENGTH_SHORT).show();
-                        startActivity(new Intent(RegistroArrendatario.this,MainActivity.class));
+                        startActivity(new Intent(RegistroArrendatario.this,MainActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {

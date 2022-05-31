@@ -34,8 +34,16 @@ public class Launcher extends AppCompatActivity {
 
         verificarUsuario();
 
-
     }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        autenticacion = FirebaseAuth.getInstance();
+        usuario = autenticacion.getCurrentUser();
+        db = FirebaseFirestore.getInstance();
+    }
+
     void verificarUsuario() {
         if(usuario == null) {
             startActivity(new Intent(Launcher.this, MainActivity.class));

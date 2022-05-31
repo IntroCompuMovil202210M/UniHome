@@ -71,7 +71,7 @@ public class Publicar extends AppCompatActivity {
 
         File archivo = new File(getFilesDir(),"fotoCamara");
         uriFoto = FileProvider.getUriForFile(this,getApplicationContext().getPackageName()+".fileprovider",archivo);
-        //botonCancelar.setOnClickListener(cancelar);
+        botonCancelar.setOnClickListener(cancelar);
     }
 
     private boolean validar(String nombre, String descripcion, String direccion){
@@ -100,7 +100,7 @@ public class Publicar extends AppCompatActivity {
                     @Override
                     public void onSuccess(Void aVoid) {
                         Toast.makeText(Publicar.this, "Se publicó la residencia correctamente.", Toast.LENGTH_SHORT).show();
-                        startActivity(new Intent(Publicar.this,PrincipalArrendatario.class));
+                        startActivity(new Intent(Publicar.this,PrincipalArrendatario.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {

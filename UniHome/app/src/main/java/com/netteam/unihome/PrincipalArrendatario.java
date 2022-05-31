@@ -149,6 +149,12 @@ public class PrincipalArrendatario extends FragmentActivity implements OnMapRead
         sensorManager.unregisterListener(tempSensorListener);
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        startActivity(new Intent(PrincipalArrendatario.this,Launcher.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
+    }
+
     ActivityResultLauncher<IntentSenderRequest> getLocationSettings =
             registerForActivityResult(
                     new ActivityResultContracts.StartIntentSenderForResult(),

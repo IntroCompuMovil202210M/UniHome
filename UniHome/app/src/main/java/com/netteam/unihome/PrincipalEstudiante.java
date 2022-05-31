@@ -92,11 +92,14 @@ public class PrincipalEstudiante extends FragmentActivity implements OnMapReadyC
     private Sensor lightSensor,tempSensor;
     private SensorEventListener lightSensorListener, tempSensorListener;
     private float tempActual;
-    Residencia residencia;
+    private Residencia residencia;
     private Geocoder geocoder;
     private Address resultadoBusqueda;
     private RoadManager roadManager;
-    Polyline roadOverlay;
+    private Polyline roadOverlay;
+    private AlertDialog dialog;
+    private AlertDialog.Builder builder;
+    private ArrayList<MarkerOptions> marcadores;
 
     @SuppressLint("MissingPermission")
     @Override
@@ -104,6 +107,7 @@ public class PrincipalEstudiante extends FragmentActivity implements OnMapReadyC
         super.onCreate(savedInstanceState);
         binding = ActivityPrincipalEstudianteBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        marcadores = new ArrayList<MarkerOptions>();
 
         marcador = new MarkerOptions();
         ubicacion = new LatLng(0,0);
@@ -148,7 +152,7 @@ public class PrincipalEstudiante extends FragmentActivity implements OnMapReadyC
         rutaE.setOnClickListener(iniciarRuta);
         rutaE.setActivated(false);
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(PrincipalEstudiante.this);
+        builder = new AlertDialog.Builder(PrincipalEstudiante.this);
         builder.setMessage("Desea iniciar un chat?");
         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
@@ -161,7 +165,7 @@ public class PrincipalEstudiante extends FragmentActivity implements OnMapReadyC
                 Toast.makeText(PrincipalEstudiante.this,"Mensaje de prueba",Toast.LENGTH_SHORT).show();
             }
         });
-        AlertDialog dialog = builder.create();
+        dialog = builder.create();
 
     }
 
@@ -178,7 +182,7 @@ public class PrincipalEstudiante extends FragmentActivity implements OnMapReadyC
         direccionMarcador = ubicacion;
         rutaE.setActivated(false);
         leerResidencias();
-        mMap.setOnInfoWindowClickListener();
+        mMap.setOnInfoWindowClickListener(infoVentana);
     }
 
     private GoogleMap.OnMarkerClickListener clickMarcador = new GoogleMap.OnMarkerClickListener() {
@@ -195,7 +199,7 @@ public class PrincipalEstudiante extends FragmentActivity implements OnMapReadyC
         public void onInfoWindowClick(@NonNull Marker marker) {
             residencia= busquedaResidencia(marker.getTitle());
             if (residencia != null){
-
+                dialog.show();
             }
         }
     };
@@ -225,6 +229,11 @@ public class PrincipalEstudiante extends FragmentActivity implements OnMapReadyC
         public void onClick(View view) {
             if(direccionMarcador.latitude!=ubicacion.latitude && direccionMarcador.longitude!=ubicacion.longitude)
             {
+                mMap.clear();
+                mMap.addMarker(marcador);
+                for(MarkerOptions m: marcadores){
+                    mMap.addMarker(m);
+                }
                 drawRoute(new GeoPoint(ubicacion.latitude,ubicacion.longitude),new GeoPoint(direccionMarcador.latitude,direccionMarcador.longitude));
                 direccionMarcador = ubicacion;
             }
@@ -281,6 +290,12 @@ public class PrincipalEstudiante extends FragmentActivity implements OnMapReadyC
         stopLocationUpdates();
         sensorManager.unregisterListener(lightSensorListener);
         sensorManager.unregisterListener(tempSensorListener);
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        startActivity(new Intent(PrincipalEstudiante.this,Launcher.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
     }
 
     ActivityResultLauncher<IntentSenderRequest> getLocationSettings =
@@ -463,6 +478,7 @@ public class PrincipalEstudiante extends FragmentActivity implements OnMapReadyC
                                 LatLng ubicacion = buscarDireccion(residencia.getDireccion());
                                 marker.position(ubicacion).title(residencia.getNombre());
                                 mMap.addMarker(marker);
+                                marcadores.add(marker);
                             }
                         } else {
                             Log.i("DB", "Excepción: "+ task.getException());
