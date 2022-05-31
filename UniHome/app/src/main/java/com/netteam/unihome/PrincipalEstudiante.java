@@ -11,6 +11,8 @@ import androidx.fragment.app.FragmentActivity;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.hardware.Sensor;
@@ -55,6 +57,8 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -143,6 +147,22 @@ public class PrincipalEstudiante extends FragmentActivity implements OnMapReadyC
         chatsE.setOnClickListener(abrirChat);
         rutaE.setOnClickListener(iniciarRuta);
         rutaE.setActivated(false);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(PrincipalEstudiante.this);
+        builder.setMessage("Desea iniciar un chat?");
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                // intent de chat
+            }
+        });
+        builder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                // User cancelled the dialog
+                Toast.makeText(PrincipalEstudiante.this,"Mensaje de prueba",Toast.LENGTH_SHORT).show();
+            }
+        });
+        AlertDialog dialog = builder.create();
+
     }
 
     @Override
@@ -158,6 +178,7 @@ public class PrincipalEstudiante extends FragmentActivity implements OnMapReadyC
         direccionMarcador = ubicacion;
         rutaE.setActivated(false);
         leerResidencias();
+        mMap.setOnInfoWindowClickListener();
     }
 
     private GoogleMap.OnMarkerClickListener clickMarcador = new GoogleMap.OnMarkerClickListener() {
@@ -168,6 +189,36 @@ public class PrincipalEstudiante extends FragmentActivity implements OnMapReadyC
             return false;
         }
     };
+
+    private GoogleMap.OnInfoWindowClickListener infoVentana = new GoogleMap.OnInfoWindowClickListener() {
+        @Override
+        public void onInfoWindowClick(@NonNull Marker marker) {
+            residencia= busquedaResidencia(marker.getTitle());
+            if (residencia != null){
+
+            }
+        }
+    };
+
+    private Residencia busquedaResidencia (String id){
+        Residencia aux = null;
+        DocumentReference docRef = db.collection("residencias").document(id);
+        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()){
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()){
+                        residencia = document.toObject(Residencia.class);
+                    }
+                }
+                else{
+                    Log.i("BD", "Excepción: "+ task.getException());
+                }
+            }
+        });
+        return residencia;
+    }
 
     private View.OnClickListener iniciarRuta = new View.OnClickListener() {
         @Override
