@@ -157,6 +157,8 @@ public class PrincipalEstudiante extends FragmentActivity implements OnMapReadyC
         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 // intent de chat
+                Intent nuevoChat = new Intent(PrincipalEstudiante.this,ChatActivity.class);
+                startActivity(nuevoChat);
             }
         });
         builder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
@@ -243,7 +245,7 @@ public class PrincipalEstudiante extends FragmentActivity implements OnMapReadyC
     private View.OnClickListener abrirChat = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-            Intent actividadChat = new Intent(PrincipalEstudiante.this,ListaChat.class);
+            Intent actividadChat = new Intent(PrincipalEstudiante.this,ListaChats.class);
             startActivity(actividadChat);
         }
     };

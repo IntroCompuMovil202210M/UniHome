@@ -20,7 +20,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Design.Light.NoActionBar">
         <activity
-            android:name=".ListaChat"
+            android:name=".ChatActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ListaChats"
             android:exported="false" />
         <activity
             android:name=".Launcher"
@@ -62,7 +65,7 @@
             android:label="Registro" />
         <activity
             android:name=".MainActivity"
-            android:exported="false"></activity>
+            android:exported="false" />
 
         <provider
             android:name="androidx.core.content.FileProvider"
