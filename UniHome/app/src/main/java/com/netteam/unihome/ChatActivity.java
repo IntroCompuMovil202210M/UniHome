@@ -44,9 +44,7 @@ public class ChatActivity extends AppCompatActivity {
         botonEnviar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                adaptador.addMensaje(new Mensaje(inputMensaje.getText().toString(),nombreUsuarioChat.getText().toString(),"00:00"));
-                Log.i("CHAT","NOMBREUSUARIO: " + nombreUsuarioChat.getText().toString()+" MENSAJE: " + inputMensaje.getText().toString());
-                Log.i("CHAT", "LISTA "+ adaptador.getItemCount());
+                anadirMensaje();
             }
         });
 
@@ -65,5 +63,8 @@ public class ChatActivity extends AppCompatActivity {
 
     private void anadirMensaje(){
         adaptador.addMensaje(new Mensaje(inputMensaje.getText().toString(),nombreUsuarioChat.getText().toString(),"00:00"));
+        Log.i("CHAT","NOMBREUSUARIO: " + nombreUsuarioChat.getText().toString()+" MENSAJE: " + inputMensaje.getText().toString());
+        Log.i("CHAT", "LISTA "+ adaptador.getItemCount());
+        inputMensaje.setText("");
     }
 }

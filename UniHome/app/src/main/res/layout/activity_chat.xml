@@ -50,8 +50,8 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/chatRecycler"
-        android:layout_width="363dp"
-        android:layout_height="750dp"
+        android:layout_width="406dp"
+        android:layout_height="746dp"
         android:clipToPadding="false"
         android:orientation="vertical"
         android:overScrollMode="never"
