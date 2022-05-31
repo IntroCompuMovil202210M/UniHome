@@ -15,6 +15,8 @@ import android.widget.TextView;
 import com.netteam.unihome.adapters.MensajeAdapter;
 import com.netteam.unihome.models.Mensaje;
 
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Observer;
 
 public class ChatActivity extends AppCompatActivity {
@@ -25,6 +27,8 @@ public class ChatActivity extends AppCompatActivity {
     private RecyclerView rvMensajes;
 
     private MensajeAdapter adaptador;
+
+    private LocalTime horaActual;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,7 +66,9 @@ public class ChatActivity extends AppCompatActivity {
     }
 
     private void anadirMensaje(){
-        adaptador.addMensaje(new Mensaje(inputMensaje.getText().toString(),nombreUsuarioChat.getText().toString(),"00:00"));
+        horaActual = LocalTime.now();
+        DateTimeFormatter f = DateTimeFormatter.ofPattern("hh:mm");
+        adaptador.addMensaje(new Mensaje(inputMensaje.getText().toString(),nombreUsuarioChat.getText().toString(),horaActual.format(f).toString()));
         Log.i("CHAT","NOMBREUSUARIO: " + nombreUsuarioChat.getText().toString()+" MENSAJE: " + inputMensaje.getText().toString());
         Log.i("CHAT", "LISTA "+ adaptador.getItemCount());
         inputMensaje.setText("");
