@@ -33,12 +33,12 @@ public class MensajeAdapter extends RecyclerView.Adapter<HolderMensaje> {
     @NonNull
     @Override
     public HolderMensaje onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(c).inflate(R.layout.card_view_mensajes,parent,false);
+        View v = LayoutInflater.from(c).inflate(R.layout.item_contenedor_mensaje_enviado,parent,false);
         return new HolderMensaje(v);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull HolderMensaje holder, int position) {
+    public void onBindViewHolder(HolderMensaje holder, int position) {
         holder.getNombre().setText(ListMensaje.get(position).getNombre());
         holder.getMensaje().setText(ListMensaje.get(position).getMsg());
         holder.getHora().setText(ListMensaje.get(position).getHora());
