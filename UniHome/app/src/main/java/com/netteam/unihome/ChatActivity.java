@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -27,8 +28,10 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FieldPath;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.netteam.unihome.adapters.MensajeAdapter;
@@ -56,6 +59,7 @@ public class ChatActivity extends AppCompatActivity {
     private Estudiante estudiante;
     private FirebaseFirestore db;
     private CollectionReference docRef;
+    private int contadorMsg;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,12 +76,15 @@ public class ChatActivity extends AppCompatActivity {
         rvMensajes.setLayoutManager(l);
         rvMensajes.setAdapter(adaptador);
 
+        contadorMsg = 1000;
+
         autenticacion = FirebaseAuth.getInstance();
         usuario = autenticacion.getCurrentUser();
         database = FirebaseDatabase.getInstance();
         databaseReference = database.getReference("chat");
         db = FirebaseFirestore.getInstance();
-        docRef = db.collection("chats").document("fxQDjst2xJXCdh9Lj7iB").collection("prueba");
+        String idChat = getIntent().getStringExtra("idChat");
+        docRef = db.collection("chats").document(idChat).collection("mensajes");
 
         botonEnviar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -103,8 +110,11 @@ public class ChatActivity extends AppCompatActivity {
                             return;
                         }
                         adaptador = new MensajeAdapter(ChatActivity.this);
+                        contadorMsg = 1000;
+
                         for (QueryDocumentSnapshot doc : value) {
                             adaptador.addMensaje(doc.toObject(Mensaje.class));
+                            contadorMsg++;
                             Log.i("msg","Mensaje Leido");
                         }
                         rvMensajes.setAdapter(adaptador);
@@ -150,9 +160,10 @@ public class ChatActivity extends AppCompatActivity {
             DateTimeFormatter f = DateTimeFormatter.ofPattern("hh:mm");
             Map<String, Object> mensaje = new HashMap<>();
             mensaje.put("msg", inputMensaje.getText().toString());
-            mensaje.put("nombre", nombreUsuarioChat.getText().toString());
+            mensaje.put("nombre", usuario.getDisplayName());
             mensaje.put("hora", horaActual.format(f).toString());
-            docRef.add(mensaje);
+            mensaje.put("pos",contadorMsg+1);
+            docRef.document(Integer.toString(contadorMsg+1)).set(mensaje);
             inputMensaje.setText("");
         }
     }

@@ -13,10 +13,14 @@ import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.squareup.picasso.Picasso;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class VerResidencia extends AppCompatActivity {
 
@@ -24,6 +28,7 @@ public class VerResidencia extends AppCompatActivity {
     private ImageView fotoResidencia;
     private Button iniciarChatVer;
     private FirebaseFirestore db;
+    private FirebaseAuth autenticacion;
     private Residencia residencia,aux;
     private String arrendatario;
 
@@ -39,6 +44,7 @@ public class VerResidencia extends AppCompatActivity {
         iniciarChatVer = findViewById(R.id.iniciarChatVer);
 
         db = FirebaseFirestore.getInstance();
+        autenticacion = FirebaseAuth.getInstance();
         aux = new Residencia();
 
         Bundle info = getIntent().getBundleExtra("bundle");
@@ -76,7 +82,11 @@ public class VerResidencia extends AppCompatActivity {
         @Override
         public void onClick(View view) {
             Intent irChat = new Intent(VerResidencia.this,ChatActivity.class);
-            irChat.putExtra("arrendatario",arrendatario);
+            irChat.putExtra("idChat",autenticacion.getUid()+arrendatario);
+            Map<String, Object> chat = new HashMap<>();
+            chat.put("estudiante", autenticacion.getUid());
+            chat.put("arrendatario", arrendatario);
+            db.collection("chats").document(autenticacion.getUid()+arrendatario).set(chat);
             startActivity(irChat);
         }
     };

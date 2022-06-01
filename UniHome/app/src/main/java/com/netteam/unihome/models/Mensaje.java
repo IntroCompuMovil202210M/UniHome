@@ -4,15 +4,17 @@ public class Mensaje {
     private String msg;
     private String nombre;
     private String hora;
+    private Integer pos;
 
     public Mensaje(){
 
     }
 
-    public Mensaje(String msg, String nombre, String hora) {
+    public Mensaje(String msg, String nombre, String hora, Integer pos) {
         this.msg = msg;
         this.nombre = nombre;
         this.hora = hora;
+        this.pos = pos;
     }
 
     public String getMsg() {
@@ -33,6 +35,14 @@ public class Mensaje {
 
     public String getHora() {
         return hora;
+    }
+
+    public Integer getPos() {
+        return pos;
+    }
+
+    public void setPos(Integer pos) {
+        this.pos = pos;
     }
 
     public void setHora(String hora) {
