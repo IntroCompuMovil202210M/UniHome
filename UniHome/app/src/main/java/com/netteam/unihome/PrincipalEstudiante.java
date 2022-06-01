@@ -97,8 +97,6 @@ public class PrincipalEstudiante extends FragmentActivity implements OnMapReadyC
     private Address resultadoBusqueda;
     private RoadManager roadManager;
     private Polyline roadOverlay;
-    private AlertDialog dialog;
-    private AlertDialog.Builder builder;
     private ArrayList<MarkerOptions> marcadores;
 
     @SuppressLint("MissingPermission")
@@ -152,21 +150,6 @@ public class PrincipalEstudiante extends FragmentActivity implements OnMapReadyC
         rutaE.setOnClickListener(iniciarRuta);
         rutaE.setActivated(false);
 
-        builder = new AlertDialog.Builder(PrincipalEstudiante.this);
-        builder.setMessage("Desea iniciar un chat?");
-        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                // intent de chat
-            }
-        });
-        builder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                // User cancelled the dialog
-                Toast.makeText(PrincipalEstudiante.this,"Mensaje de prueba",Toast.LENGTH_SHORT).show();
-            }
-        });
-        dialog = builder.create();
-
     }
 
     @Override
@@ -199,7 +182,7 @@ public class PrincipalEstudiante extends FragmentActivity implements OnMapReadyC
         public void onInfoWindowClick(@NonNull Marker marker) {
             residencia= busquedaResidencia(marker.getTitle());
             if (residencia != null){
-                dialog.show();
+                //Ver residencia
             }
         }
     };
