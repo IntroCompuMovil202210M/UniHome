@@ -29,5 +29,4 @@
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
     <string name="title_activity_principal_estudiante">PrincipalEstudiante</string>
 
-    <string name="default_notification_channel_id">0</string>
 </resources>

@@ -21,9 +21,7 @@
         android:theme="@style/Theme.Design.Light.NoActionBar">
         <service
             android:name=".ServicioNotifs"
-            android:enabled="true"
-            android:exported="false"
-            >
+            android:exported="false">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
@@ -62,7 +60,7 @@
             android:value="${CLAVE_API}" />
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_channel_id"
-            android:value="@string/default_notification_channel_id" />
+            android:value="UniHome" />
 
         <activity
             android:name=".PrincipalEstudiante"

@@ -129,6 +129,7 @@ public class PrincipalArrendatario extends FragmentActivity implements OnMapRead
         publicarA.setOnClickListener(publicar);
         FirebaseMessaging.getInstance().setAutoInitEnabled(true);
         FirebaseMessaging.getInstance().getToken().addOnCompleteListener(obtenerToken);
+        FirebaseMessaging.getInstance().subscribeToTopic("prueba");
     }
 
 

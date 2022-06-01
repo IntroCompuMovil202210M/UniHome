@@ -154,7 +154,7 @@ public class PrincipalEstudiante extends FragmentActivity implements OnMapReadyC
         rutaE.setActivated(false);
         FirebaseMessaging.getInstance().setAutoInitEnabled(true);
         FirebaseMessaging.getInstance().getToken().addOnCompleteListener(obtenerToken);
-
+        FirebaseMessaging.getInstance().subscribeToTopic("prueba");
     }
 
     @Override

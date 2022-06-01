@@ -3,7 +3,10 @@ package com.netteam.unihome;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
@@ -23,6 +26,7 @@ public class Launcher extends AppCompatActivity {
     FirebaseFirestore db;
     Arrendatario arrendatario;
     Estudiante estudiante;
+    public static String CHANNEL_ID = "UniHome";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,9 +35,8 @@ public class Launcher extends AppCompatActivity {
         autenticacion = FirebaseAuth.getInstance();
         usuario = autenticacion.getCurrentUser();
         db = FirebaseFirestore.getInstance();
-
+        crearCanalNotifs();
         verificarUsuario();
-
     }
 
     @Override
@@ -97,4 +100,17 @@ public class Launcher extends AppCompatActivity {
             }
         });
     }
+
+    private void crearCanalNotifs(){
+        if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.O){
+            CharSequence nombre = "notificaciones";
+            String descripcion = "canal de prueba";
+            int importancia = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel canal = new NotificationChannel(CHANNEL_ID,nombre,importancia);
+            canal.setDescription(descripcion);
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(canal);
+        }
+    }
+
 }
