@@ -137,7 +137,6 @@ public class PrincipalEstudiante extends FragmentActivity implements OnMapReadyC
         lightSensorListener = lecturaSensor;
         tempSensorListener = lecturaTemperatura;
         tempActual = 0;
-        checkLocationSettings();
 
         SupportMapFragment mapFragment2 = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.mapE);
@@ -215,6 +214,7 @@ public class PrincipalEstudiante extends FragmentActivity implements OnMapReadyC
     private View.OnClickListener iniciarRuta = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
+            checkLocationSettings();
             if(direccionMarcador.latitude!=ubicacion.latitude && direccionMarcador.longitude!=ubicacion.longitude)
             {
                 mMap.clear();
@@ -297,6 +297,7 @@ public class PrincipalEstudiante extends FragmentActivity implements OnMapReadyC
                                 settingsOK = true;
                                 startLocationUpdates();
                             }else{
+                                settingsOK = false;
                                 Toast.makeText(PrincipalEstudiante.this, "GPS Apagado", Toast.LENGTH_SHORT).show();
                             }
                         }
@@ -340,7 +341,9 @@ public class PrincipalEstudiante extends FragmentActivity implements OnMapReadyC
     private void startLocationUpdates() {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) ==
                 PackageManager.PERMISSION_GRANTED) {
-            mFusedLocationClient.requestLocationUpdates(mLocationRequest, mLocationCallback, null);
+            if(settingsOK){
+                mFusedLocationClient.requestLocationUpdates(mLocationRequest, mLocationCallback, null);
+            }
         }
     }
 
@@ -355,7 +358,8 @@ public class PrincipalEstudiante extends FragmentActivity implements OnMapReadyC
             Location nuevaUbicacion = locationResult.getLastLocation();
             ubicacion = new LatLng(nuevaUbicacion.getLatitude(),nuevaUbicacion.getLongitude());
             marcador.position(ubicacion).title("Ubicacion Actual");
-            Log.i("DB","Ubicación Actualizada!");
+            mMap.moveCamera(CameraUpdateFactory.zoomTo(15));
+            mMap.moveCamera(CameraUpdateFactory.newLatLng(ubicacion));
             /*if(nuevaUbicacion!=null)
             {
                 if(distance(ubicacion.latitude,ubicacion.longitude,
