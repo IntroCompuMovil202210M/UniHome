@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".VerResidencia">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/imageView6"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="0.1"
+            app:srcCompat="@drawable/logo1" />
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="179dp"
+            android:layout_height="76dp"
+            android:autoSizeMaxTextSize="100sp"
+            android:autoSizeTextType="uniform"
+            android:text="Residencia"
+            android:layout_weight="0.8"
+            android:textColor="@color/ColorLogoUnihome"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/nombreResidenciaVer"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginTop="60dp"
+        android:autoSizeMaxTextSize="100sp"
+        android:autoSizeTextType="uniform"
+        android:gravity="center"
+        android:text="nombre"
+        android:textColor="@color/ColorLogoUnihome"
+        android:textStyle="bold" />
+
+    <ImageView
+        android:id="@+id/fotoResidencia"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="32dp" />
+
+    <TextView
+        android:id="@+id/DireccionResidencia"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_marginTop="32dp"
+        android:layout_gravity="center"
+        android:textColor="@color/ColorLogoUnihome"
+        android:text="direccion" />
+
+    <TextView
+        android:id="@+id/descripcionResidenciaVer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="30dp"
+        android:layout_marginTop="16dp"
+        android:textColor="@color/ColorLogoUnihome"
+        android:text="Descripcion" />
+
+    <Button
+        android:id="@+id/iniciarChatVer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginBottom="32dp"
+        android:background="@drawable/estilo_edittext"
+        android:backgroundTint="@color/ColorLogoUnihome"
+        android:text="Iniciar Chat"
+        android:textColor="@color/white" />
+
+</LinearLayout>

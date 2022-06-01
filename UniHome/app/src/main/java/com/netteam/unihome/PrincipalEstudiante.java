@@ -92,13 +92,11 @@ public class PrincipalEstudiante extends FragmentActivity implements OnMapReadyC
     private Sensor lightSensor,tempSensor;
     private SensorEventListener lightSensorListener, tempSensorListener;
     private float tempActual;
-    private Residencia residencia;
+    private Residencia residencia,aux;
     private Geocoder geocoder;
     private Address resultadoBusqueda;
     private RoadManager roadManager;
     private Polyline roadOverlay;
-    private AlertDialog dialog;
-    private AlertDialog.Builder builder;
     private ArrayList<MarkerOptions> marcadores;
 
     @SuppressLint("MissingPermission")
@@ -115,6 +113,7 @@ public class PrincipalEstudiante extends FragmentActivity implements OnMapReadyC
         residencia = null;
         geocoder = new Geocoder(this);
         roadManager = new OSRMRoadManager(this, "ANDROID");
+        aux = new Residencia();
 
         cuentaE = findViewById(R.id.cuentaE);
         chatsE = findViewById(R.id.chatsE);
@@ -151,24 +150,6 @@ public class PrincipalEstudiante extends FragmentActivity implements OnMapReadyC
         chatsE.setOnClickListener(abrirChat);
         rutaE.setOnClickListener(iniciarRuta);
         rutaE.setActivated(false);
-
-        builder = new AlertDialog.Builder(PrincipalEstudiante.this);
-        builder.setMessage("Desea iniciar un chat?");
-        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                // intent de chat
-                Intent nuevoChat = new Intent(PrincipalEstudiante.this,ChatActivity.class);
-                startActivity(nuevoChat);
-            }
-        });
-        builder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                // User cancelled the dialog
-                Toast.makeText(PrincipalEstudiante.this,"Mensaje de prueba",Toast.LENGTH_SHORT).show();
-            }
-        });
-        dialog = builder.create();
-
     }
 
     @Override
@@ -199,15 +180,11 @@ public class PrincipalEstudiante extends FragmentActivity implements OnMapReadyC
     private GoogleMap.OnInfoWindowClickListener infoVentana = new GoogleMap.OnInfoWindowClickListener() {
         @Override
         public void onInfoWindowClick(@NonNull Marker marker) {
-            residencia= busquedaResidencia(marker.getTitle());
-            if (residencia != null){
-                dialog.show();
-            }
+            busquedaResidencia(marker.getTitle());
         }
     };
 
-    private Residencia busquedaResidencia (String id){
-        Residencia aux = null;
+    private void busquedaResidencia (String id){
         DocumentReference docRef = db.collection("residencias").document(id);
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
@@ -216,6 +193,16 @@ public class PrincipalEstudiante extends FragmentActivity implements OnMapReadyC
                     DocumentSnapshot document = task.getResult();
                     if (document.exists()){
                         residencia = document.toObject(Residencia.class);
+                        Log.i("nombre",residencia.getNombre());
+                        Bundle bundle = new Bundle();
+                        bundle.putString("nombre",residencia.getNombre());
+                        bundle.putString("descripcion",residencia.getDescripcion());
+                        bundle.putString("direccion",residencia.getDireccion());
+                        bundle.putString("arrendatario",residencia.getArrendatario());
+                        bundle.putString("foto",residencia.getFoto());
+                        Intent verResidencia = new Intent(PrincipalEstudiante.this,VerResidencia.class);
+                        verResidencia.putExtra("bundle",bundle);
+                        startActivity(verResidencia);
                     }
                 }
                 else{
@@ -223,7 +210,6 @@ public class PrincipalEstudiante extends FragmentActivity implements OnMapReadyC
                 }
             }
         });
-        return residencia;
     }
 
     private View.OnClickListener iniciarRuta = new View.OnClickListener() {

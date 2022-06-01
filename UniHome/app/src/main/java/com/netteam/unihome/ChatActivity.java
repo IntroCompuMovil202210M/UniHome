@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -22,14 +23,23 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.netteam.unihome.adapters.MensajeAdapter;
 import com.netteam.unihome.models.Mensaje;
 
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class ChatActivity extends AppCompatActivity {
 
@@ -45,6 +55,7 @@ public class ChatActivity extends AppCompatActivity {
     private FirebaseAuth autenticacion;
     private Estudiante estudiante;
     private FirebaseFirestore db;
+    private CollectionReference docRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,8 +77,7 @@ public class ChatActivity extends AppCompatActivity {
         database = FirebaseDatabase.getInstance();
         databaseReference = database.getReference("chat");
         db = FirebaseFirestore.getInstance();
-
-        buscarEstudiante(usuario.getUid());
+        docRef = db.collection("chats").document("fxQDjst2xJXCdh9Lj7iB").collection("prueba");
 
         botonEnviar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -84,7 +94,24 @@ public class ChatActivity extends AppCompatActivity {
             }
         });
 
-        databaseReference.addChildEventListener(new ChildEventListener() {
+        docRef.addSnapshotListener(new EventListener<QuerySnapshot>() {
+                    @Override
+                    public void onEvent(@Nullable QuerySnapshot value,
+                                        @Nullable FirebaseFirestoreException e) {
+                        if (e != null) {
+                            Log.i("TAG", "Listen failed. " + e);
+                            return;
+                        }
+                        adaptador = new MensajeAdapter(ChatActivity.this);
+                        for (QueryDocumentSnapshot doc : value) {
+                            adaptador.addMensaje(doc.toObject(Mensaje.class));
+                            Log.i("msg","Mensaje Leido");
+                        }
+                        rvMensajes.setAdapter(adaptador);
+                    }
+        });
+
+        /*databaseReference.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
                 Mensaje m = snapshot.getValue(Mensaje.class);
@@ -110,40 +137,22 @@ public class ChatActivity extends AppCompatActivity {
             public void onCancelled(@NonNull DatabaseError error) {
 
             }
-        });
-    }
-
-    private void buscarEstudiante(String id){
-        DocumentReference docRef = db.collection("estudiantes").document(id);
-        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    DocumentSnapshot document = task.getResult();
-                    if (document.exists()) {
-                        estudiante = document.toObject(Estudiante.class);
-                        nombreUsuarioChat.setText(estudiante.getNombre()+" "+estudiante.getApellido());
-                    } else {
-                        estudiante = null;
-                    }
-                } else {
-                    Log.i("BD", "Excepción: "+ task.getException());
-                }
-            }
-        });
+        });*/
     }
 
     private void setScrollBar(){
-        rvMensajes.scrollToPosition(adaptador.getItemCount()-1);
+        rvMensajes.scrollToPosition(adaptador.getItemCount());
     }
 
     private void anadirMensaje(){
         if(inputMensaje.getText().toString() != null){
             horaActual = LocalTime.now();
             DateTimeFormatter f = DateTimeFormatter.ofPattern("hh:mm");
-            databaseReference.push().setValue(new Mensaje(inputMensaje.getText().toString(),nombreUsuarioChat.getText().toString(),horaActual.format(f).toString()));
-            Log.i("CHAT","NOMBREUSUARIO: " + nombreUsuarioChat.getText().toString()+" MENSAJE: " + inputMensaje.getText().toString());
-            Log.i("CHAT", "LISTA "+ adaptador.getItemCount());
+            Map<String, Object> mensaje = new HashMap<>();
+            mensaje.put("msg", inputMensaje.getText().toString());
+            mensaje.put("nombre", nombreUsuarioChat.getText().toString());
+            mensaje.put("hora", horaActual.format(f).toString());
+            docRef.add(mensaje);
             inputMensaje.setText("");
         }
     }
