@@ -62,6 +62,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.netteam.unihome.databinding.ActivityPrincipalBinding;
 import com.netteam.unihome.databinding.ActivityPrincipalEstudianteBinding;
 
@@ -73,7 +74,9 @@ import org.osmdroid.util.GeoPoint;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class PrincipalEstudiante extends FragmentActivity implements OnMapReadyCallback {
 
@@ -149,6 +152,8 @@ public class PrincipalEstudiante extends FragmentActivity implements OnMapReadyC
         chatsE.setOnClickListener(abrirChat);
         rutaE.setOnClickListener(iniciarRuta);
         rutaE.setActivated(false);
+        FirebaseMessaging.getInstance().setAutoInitEnabled(true);
+        FirebaseMessaging.getInstance().getToken().addOnCompleteListener(obtenerToken);
 
     }
 
@@ -166,6 +171,27 @@ public class PrincipalEstudiante extends FragmentActivity implements OnMapReadyC
         rutaE.setActivated(false);
         leerResidencias();
         mMap.setOnInfoWindowClickListener(infoVentana);
+    }
+
+    private OnCompleteListener<String> obtenerToken = new OnCompleteListener<String>() {
+        @Override
+        public void onComplete(@NonNull Task<String> task) {
+            if (!task.isSuccessful()) {
+                Log.i("Notif", "Fetching FCM registration token failed: "+ task.getException());
+                return;
+            }
+
+            // Get new FCM registration token
+            String token = task.getResult();
+
+            cargarToken(token);
+        }
+    };
+
+    private void cargarToken(String token){
+        Map<String, Object> nuevoToken = new HashMap<>();
+        nuevoToken.put("token",token);
+        db.collection("tokens").document(autenticacion.getUid()).set(nuevoToken);
     }
 
     private GoogleMap.OnMarkerClickListener clickMarcador = new GoogleMap.OnMarkerClickListener() {

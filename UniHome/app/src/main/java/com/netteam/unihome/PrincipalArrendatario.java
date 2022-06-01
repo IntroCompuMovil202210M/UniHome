@@ -49,12 +49,16 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.tabs.TabItem;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.messaging.FirebaseMessaging;
+import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.netteam.unihome.databinding.ActivityPrincipalBinding;
@@ -63,6 +67,8 @@ import com.squareup.picasso.Picasso;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
 
 public class PrincipalArrendatario extends FragmentActivity implements OnMapReadyCallback {
 
@@ -73,6 +79,7 @@ public class PrincipalArrendatario extends FragmentActivity implements OnMapRead
     private MarkerOptions marcador;
     private ImageButton cuentaA,chatsA,publicarA;
     private FirebaseAuth autenticacion;
+    private FirebaseFirestore db;
     private boolean settingsOK;
     private LocationRequest mLocationRequest;
     private LocationCallback mLocationCallback;
@@ -91,6 +98,7 @@ public class PrincipalArrendatario extends FragmentActivity implements OnMapRead
         settingsOK = false;
 
         autenticacion = FirebaseAuth.getInstance();
+        db = FirebaseFirestore.getInstance();
 
         binding = ActivityPrincipalBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
@@ -119,6 +127,8 @@ public class PrincipalArrendatario extends FragmentActivity implements OnMapRead
         sensorManager.registerListener(tempSensorListener,tempSensor,sensorManager.SENSOR_DELAY_NORMAL);
         cuentaA.setOnClickListener(verInfo);
         publicarA.setOnClickListener(publicar);
+        FirebaseMessaging.getInstance().setAutoInitEnabled(true);
+        FirebaseMessaging.getInstance().getToken().addOnCompleteListener(obtenerToken);
     }
 
 
@@ -131,6 +141,27 @@ public class PrincipalArrendatario extends FragmentActivity implements OnMapRead
         mMap.addMarker(marcador);
         mMap.moveCamera(CameraUpdateFactory.newLatLng(ubicacion));
         mMap.moveCamera(CameraUpdateFactory.zoomTo(15));
+    }
+
+    private OnCompleteListener<String> obtenerToken = new OnCompleteListener<String>() {
+        @Override
+        public void onComplete(@NonNull Task<String> task) {
+            if (!task.isSuccessful()) {
+                Log.i("Notif", "Fetching FCM registration token failed: "+ task.getException());
+                return;
+            }
+
+            // Get new FCM registration token
+            String token = task.getResult();
+
+            cargarToken(token);
+        }
+    };
+
+    private void cargarToken(String token){
+        Map<String, Object> nuevoToken = new HashMap<>();
+        nuevoToken.put("token",token);
+        db.collection("tokens").document(autenticacion.getUid()).set(nuevoToken);
     }
 
     @Override
