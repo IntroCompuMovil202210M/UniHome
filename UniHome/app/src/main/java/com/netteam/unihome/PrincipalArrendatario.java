@@ -118,8 +118,17 @@ public class PrincipalArrendatario extends FragmentActivity implements OnMapRead
         sensorManager.registerListener(lightSensorListener,lightSensor,SensorManager.SENSOR_DELAY_NORMAL);
         sensorManager.registerListener(tempSensorListener,tempSensor,sensorManager.SENSOR_DELAY_NORMAL);
         cuentaA.setOnClickListener(verInfo);
+        chatsA.setOnClickListener(abrirChat);
         publicarA.setOnClickListener(publicar);
     }
+
+    private View.OnClickListener abrirChat = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            Intent actividadChat = new Intent(PrincipalArrendatario.this,ListaChats.class);
+            startActivity(actividadChat);
+        }
+    };
 
 
     @Override

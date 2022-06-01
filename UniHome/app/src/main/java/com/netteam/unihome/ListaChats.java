@@ -1,11 +1,9 @@
 package com.netteam.unihome;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -18,6 +16,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.netteam.unihome.models.Chat;
 
 import java.util.ArrayList;
@@ -48,11 +47,9 @@ public class ListaChats extends AppCompatActivity {
         autenticacion = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
         nombres = new ArrayList<String>();
-        listaChats = findViewById(R.id.listaChats);
-        adapter = new ArrayAdapter<String>(this, android.R.layout.activity_list_item,nombres);
-        listaChats.setAdapter(adapter);
-        Log.i("info","se inicio la lectura dle chat");
+        listaChats = (ListView) findViewById(R.id.listaChats);
         buscarEstudiante(autenticacion.getUid());
+        listaChats.setAdapter(adapter);
     }
 
     private void buscarEstudiante(String id){
@@ -63,7 +60,6 @@ public class ListaChats extends AppCompatActivity {
                 if (task.isSuccessful()) {
                     DocumentSnapshot document = task.getResult();
                     if (document.exists()) {
-                        estudiante = document.toObject(Estudiante.class);
                         esEstudiante = true;
                         leerChats();
                     } else {
@@ -79,21 +75,38 @@ public class ListaChats extends AppCompatActivity {
 
     private void leerChats(){
         if(esEstudiante){
-            Query consulta = db.collection("chats").whereEqualTo("estudiante",autenticacion.getUid());
-            for (QueryDocumentSnapshot doc:consulta.get().getResult()) {
-                chat = doc.toObject(Chat.class);
-                buscarArrendatario(chat.getArrendatario());
-                idChats.add(doc.getId());
-            }
+            db.collection("chats").whereEqualTo("estudiante",autenticacion.getUid())
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                chat = document.toObject(Chat.class);
+                                buscarArrendatario(chat.getArrendatario());
+                                idChats.add(document.getId());
+                            }
+                        }
+                    }
+                });
         }else{
-            Query consulta = db.collection("chats").whereEqualTo("arrendatario",autenticacion.getUid());
-            for (QueryDocumentSnapshot doc:consulta.get().getResult()) {
-                chat = doc.toObject(Chat.class);
-                buscarEstudianteDos(chat.getArrendatario());
-                nombres.add(estudiante.getNombre());
-                idChats.add(doc.getId());
-            }
+            db.collection("chats").whereEqualTo("arrendatario",autenticacion.getUid())
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                chat = document.toObject(Chat.class);
+                                buscarEstudianteDos(chat.getEstudiante());
+                                idChats.add(document.getId());
+                            }
+                        }
+                    }
+                });
         }
+        adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1,nombres);
+        listaChats.setAdapter(adapter);
     }
 
     private void buscarArrendatario(String id){
@@ -104,6 +117,7 @@ public class ListaChats extends AppCompatActivity {
                 if (task.isSuccessful()) {
                     DocumentSnapshot document = task.getResult();
                     if (document.exists()) {
+                        Log.i("bandera","Arrendatario encontrado!");
                         arrendatario = document.toObject(Arrendatario.class);
                         nombres.add(arrendatario.getNombre());
                     }
@@ -122,6 +136,7 @@ public class ListaChats extends AppCompatActivity {
                 if (task.isSuccessful()) {
                     DocumentSnapshot document = task.getResult();
                     if (document.exists()) {
+                        Log.i("bandera","Estudiante encontrado!");
                         estudiante = document.toObject(Estudiante.class);
                         nombres.add(estudiante.getNombre());
                     }
